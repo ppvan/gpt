@@ -46,7 +46,7 @@ func NewNetwork(layers ...Layer) *Network {
 	return &Network{
 		Layers:    layers,
 		Loss:      BinaryCrossEntrophy{},
-		Optimizer: Gradient{},
+		Optimizer: Gradient{Rate: 0.5},
 	}
 }
 

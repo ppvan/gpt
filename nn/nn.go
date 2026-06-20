@@ -1,23 +1,5 @@
 package nn
 
-import (
-	"math"
-)
-
-type Activation interface {
-	Forward(x float64) float64
-	Derivative(x float64) float64
-}
-
-type Loss interface {
-	Loss(y, pred float64) float64
-	Derivative(y, pred float64) float64
-}
-
-type Optimizer interface {
-	Update(weight *float64, grad float64)
-}
-
 type Layer struct {
 	Weights Mat
 	Biases  Mat
@@ -30,50 +12,6 @@ type Network struct {
 
 	Loss      Loss
 	Optimizer Optimizer
-}
-
-type Sigmoid struct{}
-
-func (s Sigmoid) Forward(x float64) float64 {
-	return float64(1 / (math.Exp(-x) + 1))
-}
-func (s Sigmoid) Derivative(x float64) float64 {
-	y := s.Forward(x)
-	return y * (1 - y)
-}
-
-type ReLU struct{}
-
-func (r ReLU) Forward(x float64) float64 {
-	if x > 0 {
-		return x
-	}
-	return 0
-}
-func (r ReLU) Derivative(x float64) float64 {
-	if x > 0 {
-		return 1
-	}
-	return 0
-}
-
-type BinaryCrossEntrophy struct{}
-
-func (s BinaryCrossEntrophy) Loss(y, pred float64) float64 {
-	return -y*math.Log(pred) - (1-y)*math.Log(1-pred)
-}
-
-func (s BinaryCrossEntrophy) Derivative(y, pred float64) float64 {
-	pred = math.Max(pred, 1e-15)
-	pred = math.Min(pred, 1-1e-15)
-
-	return -y/pred + (1-y)/(1-pred)
-}
-
-type Gradient struct{}
-
-func (g Gradient) Update(weight *float64, grad float64) {
-	*weight -= grad * 0.5
 }
 
 func (nn *Network) Train(epoch int, train_set Mat) {
@@ -145,6 +83,7 @@ func (nn *Network) Train(epoch int, train_set Mat) {
 				}
 			}
 		}
+
 	}
 }
 
