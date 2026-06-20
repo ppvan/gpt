@@ -1,7 +1,6 @@
-package neural_network
+package nn
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -38,9 +37,24 @@ type Sigmoid struct{}
 func (s Sigmoid) Forward(x float64) float64 {
 	return float64(1 / (math.Exp(-x) + 1))
 }
-
-func (s Sigmoid) Derivative(y float64) float64 {
+func (s Sigmoid) Derivative(x float64) float64 {
+	y := s.Forward(x)
 	return y * (1 - y)
+}
+
+type ReLU struct{}
+
+func (r ReLU) Forward(x float64) float64 {
+	if x > 0 {
+		return x
+	}
+	return 0
+}
+func (r ReLU) Derivative(x float64) float64 {
+	if x > 0 {
+		return 1
+	}
+	return 0
 }
 
 type BinaryCrossEntrophy struct{}
@@ -62,11 +76,7 @@ func (g Gradient) Update(weight *float64, grad float64) {
 	*weight -= grad * 0.5
 }
 
-func (nn Network) Cost(input []float64) float64 {
-	return 0
-}
-
-func (nn *Network) Train(epoch int, train_set [][]float64) {
+func (nn *Network) Train(epoch int, train_set Mat) {
 	for range epoch {
 		dW := make([]Mat, len(nn.Layers))
 		db := make([]Mat, len(nn.Layers))
@@ -76,18 +86,18 @@ func (nn *Network) Train(epoch int, train_set [][]float64) {
 		}
 		c := NewRowMat([]float64{0})
 
-		for index := range train_set {
+		for index := range train_set.Row {
 			delta := make([]Mat, len(nn.Layers))
-			row := train_set[index]
-			x := row[:len(row)-1]
-			y := row[len(row)-1:]
+			row := train_set.Weights[index]
+			raw_x := row[:len(row)-1]
+			raw_y := row[len(row)-1:]
 			last := len(nn.Layers) - 1
-			x_mat := NewRowMat(x).Transpose()
-			y_mat := NewRowMat(y).Transpose()
+			x := NewRowMat(raw_x).Transpose()
+			y := NewRowMat(raw_y).Transpose()
 
 			a := make([]Mat, len(nn.Layers)+1)
 			z := make([]Mat, len(nn.Layers)) // pre-activation values, one per layer
-			a[0] = x_mat
+			a[0] = x
 			for l, layer := range nn.Layers {
 				z[l] = layer.Weights.Multiply(a[l]).Add(layer.Biases)
 				a[l+1] = z[l].Apply(layer.Activation.Forward)
@@ -95,14 +105,14 @@ func (nn *Network) Train(epoch int, train_set [][]float64) {
 			pred := a[len(a)-1]
 
 			lost := pred.Apply(func(f float64) float64 {
-				return nn.Loss.Loss(y_mat.Weights[0][0], f)
+				return nn.Loss.Loss(y.Weights[0][0], f)
 			})
 			c = c.Add(lost)
 
-			// dLoss/dPred, elementwise — generic, works for any Loss
 			dLoss := pred.Apply(func(f float64) float64 {
-				return nn.Loss.Derivative(y_mat.Weights[0][0], f)
+				return nn.Loss.Derivative(y.Weights[0][0], f)
 			})
+
 			// delta[last] = dLoss/dPred ⊙ activation'[last](z[last])
 			delta[last] = dLoss.Hadamard(
 				z[last].Apply(nn.Layers[last].Activation.Derivative),
@@ -120,7 +130,7 @@ func (nn *Network) Train(epoch int, train_set [][]float64) {
 			}
 		}
 
-		n := float64(len(train_set))
+		n := float64(train_set.Row)
 		c = c.Apply(func(f float64) float64 { return f / n })
 
 		for j := range nn.Layers {
@@ -135,13 +145,12 @@ func (nn *Network) Train(epoch int, train_set [][]float64) {
 				}
 			}
 		}
-		fmt.Println(c)
 	}
 }
 
-func (nn *Network) Infer(input []float64) float64 {
+func (nn *Network) Infer(input Mat) float64 {
 
-	a := NewRowMat(input).Transpose()
+	a := input.Transpose()
 	for _, layer := range nn.Layers {
 		// a[i+1] = forward(w[i] * a[i] + b[i])
 		a = layer.Weights.Multiply(a).Add(layer.Biases).Apply(layer.Activation.Forward)

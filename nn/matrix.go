@@ -1,4 +1,4 @@
-package neural_network
+package nn
 
 import (
 	"strconv"
