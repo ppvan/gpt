@@ -19,14 +19,13 @@ func (nn *Network) outputSize() int {
 	return nn.Layers[last].Weights.Row
 }
 
-// backprop runs forward + backward pass for a single training row and
-// accumulates the weight/bias gradients into dW/db. It returns the
-// per-output loss for that row so the caller can track epoch loss.
 func (nn *Network) backprop(row []float64, dW, db []Mat) Mat {
 	delta := make([]Mat, len(nn.Layers))
-	raw_x := row[:len(row)-1]
-	raw_y := row[len(row)-1:]
 	last := len(nn.Layers) - 1
+	outSize := nn.outputSize()
+
+	raw_x := row[:len(row)-outSize]
+	raw_y := row[len(row)-outSize:]
 	x := NewRowMat(raw_x).Transpose()
 	y := NewRowMat(raw_y).Transpose()
 
@@ -39,12 +38,15 @@ func (nn *Network) backprop(row []float64, dW, db []Mat) Mat {
 	}
 	pred := a[len(a)-1]
 
-	lost := pred.Apply(func(f float64) float64 {
-		return nn.Loss.Loss(y.Weights[0][0], f)
+	// loss/dLoss are computed element-wise between pred and y, since each
+	// output neuron has its own target value (Apply alone can't do this,
+	// as it only sees pred and not the matching y for that position).
+	lost := pred.Combine(y, func(predVal, yVal float64) float64 {
+		return nn.Loss.Loss(yVal, predVal)
 	})
 
-	dLoss := pred.Apply(func(f float64) float64 {
-		return nn.Loss.Derivative(y.Weights[0][0], f)
+	dLoss := pred.Combine(y, func(predVal, yVal float64) float64 {
+		return nn.Loss.Derivative(yVal, predVal)
 	})
 
 	// delta[last] = dLoss/dPred ⊙ activation'[last](z[last])
@@ -66,8 +68,6 @@ func (nn *Network) backprop(row []float64, dW, db []Mat) Mat {
 	return lost
 }
 
-// learn applies accumulated gradients dW/db (summed over n samples) to the
-// network's weights and biases.
 func (nn *Network) learn(dW, db []Mat, n float64) {
 	for j := range nn.Layers {
 		for r := range nn.Layers[j].Weights.Weights {
@@ -106,9 +106,6 @@ func (nn *Network) Train(epoch int, train_set Mat) {
 	}
 }
 
-// Infer runs a forward pass and returns the network's raw output values,
-// one per output neuron. For single-output networks this is a length-1
-// slice; callers that only ever had one output can do result[0].
 func (nn *Network) Infer(input Mat) []float64 {
 
 	a := input.Transpose()

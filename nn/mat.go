@@ -11,42 +11,34 @@ type Mat struct {
 	Column  int
 }
 
-func (mat Mat) Add(other Mat) Mat {
-
+func (mat Mat) Combine(other Mat, f func(a, b float64) float64) Mat {
 	if mat.Row != other.Row || mat.Column != other.Column {
-		panic("In-compatible matrix, can't add")
+		panic("In-compatible matrix, can't combine")
 	}
-
 	result := make([][]float64, mat.Row)
 	for i := range mat.Weights {
 		result[i] = make([]float64, len(mat.Weights[i]))
 		for j := range mat.Weights[i] {
-			result[i][j] = mat.Weights[i][j] + other.Weights[i][j]
+			result[i][j] = f(mat.Weights[i][j], other.Weights[i][j])
 		}
 	}
-
 	return Mat{
 		Weights: result,
 		Row:     mat.Row,
 		Column:  mat.Column,
 	}
 }
+
+func (mat Mat) Add(other Mat) Mat {
+	return mat.Combine(other, func(a, b float64) float64 { return a + b })
+}
+
 func (mat Mat) Subtract(other Mat) Mat {
-	if mat.Row != other.Row || mat.Column != other.Column {
-		panic("In-compatible matrix, can't subtract")
-	}
-	result := make([][]float64, mat.Row)
-	for i := range mat.Weights {
-		result[i] = make([]float64, len(mat.Weights[i]))
-		for j := range mat.Weights[i] {
-			result[i][j] = mat.Weights[i][j] - other.Weights[i][j]
-		}
-	}
-	return Mat{
-		Weights: result,
-		Row:     mat.Row,
-		Column:  mat.Column,
-	}
+	return mat.Combine(other, func(a, b float64) float64 { return a - b })
+}
+
+func (mat Mat) Hadamard(other Mat) Mat {
+	return mat.Combine(other, func(a, b float64) float64 { return a * b })
 }
 
 func (mat Mat) Multiply(other Mat) Mat {
@@ -119,34 +111,6 @@ func NewZeroMat(row, column int) Mat {
 		Row:     row,
 		Column:  column,
 	}
-}
-
-func (mat Mat) Hadamard(other Mat) Mat {
-	if mat.Row != other.Row || mat.Column != other.Column {
-		panic("In-compatible matrix, can't do Hadamard product")
-	}
-	result := make([][]float64, mat.Row)
-	for i := range mat.Weights {
-		result[i] = make([]float64, len(mat.Weights[i]))
-		for j := range mat.Weights[i] {
-			result[i][j] = mat.Weights[i][j] * other.Weights[i][j]
-		}
-	}
-	return Mat{
-		Weights: result,
-		Row:     mat.Row,
-		Column:  mat.Column,
-	}
-}
-
-func (m Mat) Combine(o Mat, f func(a, b float64) float64) Mat {
-	out := NewZeroMat(m.Row, m.Column)
-	for r := range m.Weights {
-		for c := range m.Weights[r] {
-			out.Weights[r][c] = f(m.Weights[r][c], o.Weights[r][c])
-		}
-	}
-	return out
 }
 
 func (mat Mat) String() string {
