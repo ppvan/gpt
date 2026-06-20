@@ -139,6 +139,16 @@ func (mat Mat) Hadamard(other Mat) Mat {
 	}
 }
 
+func (m Mat) Combine(o Mat, f func(a, b float64) float64) Mat {
+	out := NewZeroMat(m.Row, m.Column)
+	for r := range m.Weights {
+		for c := range m.Weights[r] {
+			out.Weights[r][c] = f(m.Weights[r][c], o.Weights[r][c])
+		}
+	}
+	return out
+}
+
 func (mat Mat) String() string {
 	var sb strings.Builder
 	for i := range mat.Weights {

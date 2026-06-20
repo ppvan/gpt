@@ -60,7 +60,7 @@ func main() {
 		actual[i].Y = math.Cos(x)
 
 		predicted[i].X = x
-		predicted[i].Y = xor.Infer(nn.NewRowMat([]float64{x}))
+		predicted[i].Y = xor.Infer(nn.NewRowMat([]float64{x}))[0]
 	}
 
 	actualLine, _ := plotter.NewLine(actual)
@@ -73,7 +73,7 @@ func main() {
 	p.Legend.Add("cos(x)", actualLine)
 	p.Legend.Add("prediction", predLine)
 
-	p.Save(6*vg.Inch, 4*vg.Inch, "cos_vs_pred.png")
+	p.Save(6*vg.Inch, 4*vg.Inch, "./cmd/cosine/cos_vs_pred.png")
 }
 
 func cosine() {
