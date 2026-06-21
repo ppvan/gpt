@@ -72,12 +72,12 @@ func (nn *Network) learn(dW, db []Mat, n float64) {
 	for j := range nn.Layers {
 		for r := range nn.Layers[j].Weights.Weights {
 			for col := range nn.Layers[j].Weights.Weights[r] {
-				nn.Layers[j].Weights.Weights[r][col] -= 0.5 * dW[j].Weights[r][col] / n
+				nn.Optimizer.Update(&nn.Layers[j].Weights.Weights[r][col], dW[j].Weights[r][col]/n)
 			}
 		}
 		for r := range nn.Layers[j].Biases.Weights {
 			for col := range nn.Layers[j].Biases.Weights[r] {
-				nn.Layers[j].Biases.Weights[r][col] -= 0.5 * db[j].Weights[r][col] / n
+				nn.Optimizer.Update(&nn.Layers[j].Biases.Weights[r][col], db[j].Weights[r][col]/n)
 			}
 		}
 	}
