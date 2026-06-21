@@ -11,7 +11,7 @@ type Gradient struct {
 }
 
 func (g *Gradient) Update(weight *Mat, grad Mat) {
-	*weight = weight.Subtract(grad.Scale(g.Rate))
+	*weight = weight.Sub(grad.Scale(g.Rate))
 }
 
 type Adam struct {
@@ -56,5 +56,5 @@ func (a *Adam) Update(weight *Mat, grad Mat) {
 		func(x float64) float64 { return x + a.Epsilon },
 	)
 	step := mHat.Combine(denom, func(mv, dv float64) float64 { return mv / dv })
-	*weight = weight.Subtract(step.Scale(a.Rate))
+	*weight = weight.Sub(step.Scale(a.Rate))
 }
