@@ -1,186 +1,90 @@
 package nn
 
-import "fmt"
-
 type Layer struct {
-	Weights Mat
-	Biases  Mat
-
-	Activation Activation
+	Weights         Mat
+	Biases          Mat
+	Activation      Activation
+	WeightOptimizer Optimizer
+	BiasOptimizer   Optimizer
 }
 
 type Network struct {
 	Layers []Layer
 
-	Loss      Loss
-	Optimizer Optimizer
+	ErrorFunction ErrorFunction
 }
 
-func (nn *Network) outputSize() int {
+func (nn *Network) backprop(x, y Mat) (lost Mat, dW, db []Mat) {
+	batchSize := x.Row
 	last := len(nn.Layers) - 1
-	return nn.Layers[last].Weights.Row
-}
 
-func (nn *Network) backprop(row []float64, dW, db []Mat) Mat {
-	delta := make([]Mat, len(nn.Layers))
-	last := len(nn.Layers) - 1
-	outSize := nn.outputSize()
-
-	raw_x := row[:len(row)-outSize]
-	raw_y := row[len(row)-outSize:]
-	x := NewRowMat(raw_x).Transpose()
-	y := NewRowMat(raw_y).Transpose()
-
+	z := make([]Mat, len(nn.Layers))
 	a := make([]Mat, len(nn.Layers)+1)
-	z := make([]Mat, len(nn.Layers)) // pre-activation values, one per layer
+	dW = make([]Mat, len(nn.Layers))
+	db = make([]Mat, len(nn.Layers))
+	delta := make([]Mat, len(nn.Layers))
+
 	a[0] = x
 	for l, layer := range nn.Layers {
-		z[l] = layer.Weights.Multiply(a[l]).Add(layer.Biases)
+		// z[l] = a[l] * w[l] + 1.b[l]
+		one := NewZeroMat(batchSize, 1).Apply(func(f float64) float64 { return 1 })
+		b := one.Multiply(layer.Biases)
+		z[l] = a[l].Multiply(layer.Weights).Add(b)
+		// a[l+1] = f[l](z[l]) - f(x) is the activation function at layer l
 		a[l+1] = z[l].Apply(layer.Activation.Forward)
 	}
-	pred := a[len(a)-1]
 
-	// loss/dLoss are computed element-wise between pred and y, since each
-	// output neuron has its own target value (Apply alone can't do this,
-	// as it only sees pred and not the matching y for that position).
-	lost := pred.Combine(y, func(predVal, yVal float64) float64 {
-		return nn.Loss.Loss(yVal, predVal)
+	preds := a[last+1]
+	lost = preds.Combine(y, func(predVal, yVal float64) float64 {
+		return nn.ErrorFunction.Forward(yVal, predVal)
+	})
+	dLost := preds.Combine(y, func(predVal, yVal float64) float64 {
+		return nn.ErrorFunction.Derivative(yVal, predVal)
 	})
 
-	dLoss := pred.Combine(y, func(predVal, yVal float64) float64 {
-		return nn.Loss.Derivative(yVal, predVal)
-	})
-
-	// delta[last] = dLoss/dPred ⊙ activation'[last](z[last])
-	delta[last] = dLoss.Hadamard(
+	delta[last] = dLost.Hadamard(
 		z[last].Apply(nn.Layers[last].Activation.Derivative),
 	)
-
 	for j := last; j >= 0; j-- {
-		dW[j] = dW[j].Add(delta[j].Multiply(a[j].Transpose()))
-		db[j] = db[j].Add(delta[j])
+		// dW[j] = a[j]^T * delta[j]
+		dW[j] = a[j].Transpose().Multiply(delta[j])
+		// db[j] = 1^T * delta[j]
+		oneT := NewZeroMat(1, batchSize).Apply(func(f float64) float64 { return 1 })
+		db[j] = oneT.Multiply(delta[j])
+		// delta[j-1] = delta[j] * w[j]^T ** f'[l](z[l-1])
+		// f'(x) is the derivative of activation layer j
 		if j > 0 {
-			delta[j-1] = nn.Layers[j].Weights.Transpose().Multiply(delta[j])
-			delta[j-1] = delta[j-1].Hadamard(
-				z[j-1].Apply(nn.Layers[j-1].Activation.Derivative),
-			)
+			w := nn.Layers[j].Weights
+			delta[j-1] = delta[j].Multiply(w.Transpose())
+			delta[j-1] = delta[j-1].Hadamard(z[j-1].Apply(nn.Layers[j-1].Activation.Derivative))
 		}
 	}
 
-	return lost
+	return lost, dW, db
 }
 
 func (nn *Network) learn(dW, db []Mat, n float64) {
 	for j := range nn.Layers {
-		for r := range nn.Layers[j].Weights.Weights {
-			for col := range nn.Layers[j].Weights.Weights[r] {
-				nn.Optimizer.Update(&nn.Layers[j].Weights.Weights[r][col], dW[j].Weights[r][col]/n)
-			}
-		}
-		for r := range nn.Layers[j].Biases.Weights {
-			for col := range nn.Layers[j].Biases.Weights[r] {
-				nn.Optimizer.Update(&nn.Layers[j].Biases.Weights[r][col], db[j].Weights[r][col]/n)
-			}
-		}
-	}
-}
-
-func (nn *Network) OldTrain(epoch int, train_set Mat) {
-	for range epoch {
-		dW := make([]Mat, len(nn.Layers))
-		db := make([]Mat, len(nn.Layers))
-		for l := range nn.Layers {
-			dW[l] = NewZeroMat(nn.Layers[l].Weights.Row, nn.Layers[l].Weights.Column)
-			db[l] = NewZeroMat(nn.Layers[l].Biases.Row, nn.Layers[l].Biases.Column)
-		}
-		c := NewZeroMat(nn.outputSize(), 1)
-
-		for index := range train_set.Row {
-			lost := nn.backprop(train_set.Weights[index], dW, db)
-			c = c.Add(lost)
-		}
-
-		n := float64(train_set.Row)
-		c = c.Apply(func(f float64) float64 { return f / n })
-
-		nn.learn(dW, db, n)
-
+		nn.Layers[j].WeightOptimizer.Update(&nn.Layers[j].Weights, dW[j].Scale(1/n))
+		nn.Layers[j].BiasOptimizer.Update(&nn.Layers[j].Biases, db[j].Scale(1/n))
 	}
 }
 
 func (nn *Network) Train(epoch int, x Mat, y Mat) {
-
 	batchSize := x.Row
-
 	for range epoch {
-		z := make([]Mat, len(nn.Layers))
-		a := make([]Mat, len(nn.Layers)+1)
-		dW := make([]Mat, len(nn.Layers))
-		db := make([]Mat, len(nn.Layers))
-
-		delta := make([]Mat, len(nn.Layers))
-		last := len(nn.Layers) - 1
-
-		a[0] = x
-		for l, layer := range nn.Layers {
-			// z[l] = a[l] * w[l] + 1.b[l]
-			one := NewZeroMat(batchSize, 1).Apply(func(f float64) float64 { return 1 })
-			b := one.Multiply(layer.Biases)
-			z[l] = a[l].Multiply(layer.Weights).Add(b)
-
-			// a[l+1] = f[l](z[l]) - f(x) is the  activation function at layer l
-			a[l+1] = z[l].Apply(layer.Activation.Forward)
-		}
-		preds := a[last+1]
-		lost := preds.Combine(y, func(predVal, yVal float64) float64 {
-			return nn.Loss.Loss(yVal, predVal)
-		})
-		fmt.Println(lost)
-
-		dLost := preds.Combine(y, func(predVal, yVal float64) float64 {
-			return nn.Loss.Derivative(yVal, predVal)
-		})
-
-		delta[last] = dLost.Hadamard(
-			z[last].Apply(nn.Layers[last].Activation.Derivative),
-		)
-
-		for j := last; j >= 0; j-- {
-			// dW[j] = a[j]^T * delta[j]
-			dW[j] = a[j].Transpose().Multiply(delta[j])
-
-			// db[j] = 1^T * delta[j]
-			oneT := NewZeroMat(1, batchSize).Apply(func(f float64) float64 { return 1 })
-			db[j] = oneT.Multiply(delta[j])
-
-			// delta[j-1] = delta[j] * w[j]^T ** f'[l](z[l-1])
-			// f'(x) is the derivative of activation layer j
-			if j > 0 {
-				w := nn.Layers[j].Weights
-				delta[j-1] = delta[j].Multiply(w.Transpose())
-				delta[j-1] = delta[j-1].Hadamard(z[j-1].Apply(nn.Layers[j-1].Activation.Derivative))
-			}
-		}
-
+		_, dW, db := nn.backprop(x, y)
 		nn.learn(dW, db, float64(batchSize))
-
 	}
 }
 
-func (nn *Network) Infer(input Mat) []float64 {
-
+func (nn *Network) Infer(input Mat) Mat {
 	a := input
 	for _, layer := range nn.Layers {
 		// a[i+1] = forward(w[i] * a[i] + b[i])
-		one := NewZeroMat(1, 1).Apply(func(f float64) float64 { return 1 })
+		one := NewZeroMat(a.Row, 1).Apply(func(f float64) float64 { return 1 })
 		b := one.Multiply(layer.Biases)
 		a = a.Multiply(layer.Weights).Add(b).Apply(layer.Activation.Forward)
 	}
-
-	out := make([]float64, len(a.Weights))
-	for r := range a.Weights {
-		out[r] = a.Weights[r][0]
-	}
-
-	return out
+	return a
 }

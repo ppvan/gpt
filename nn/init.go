@@ -2,20 +2,18 @@ package nn
 
 import "math/rand"
 
-// weightInit returns a small random value in [-1, 1), used to
-// initialize weights and biases.
 func weightInit() float64 {
 	return rand.Float64()*2 - 1
 }
 
-// NewLayer builds a fully-connected layer with randomly initialized
-// weights and biases, ready to be used inside a Network.
-//
-// inSize is the number of inputs the layer accepts (i.e. the output
-// size of the previous layer, or the feature count for the first layer).
-// outSize is the number of neurons in this layer.
-func NewLayer(inSize, outSize int, act Activation) Layer {
+func defaultOptimizerFactory() Optimizer {
+	return &Gradient{Rate: 0.1}
+}
 
+func NewLayer(inSize, outSize int, act Activation, optFactory func() Optimizer) Layer {
+	if optFactory == nil {
+		optFactory = defaultOptimizerFactory
+	}
 	return Layer{
 		Weights: NewZeroMat(inSize, outSize).Apply(func(f float64) float64 {
 			return weightInit()
@@ -23,33 +21,36 @@ func NewLayer(inSize, outSize int, act Activation) Layer {
 		Biases: NewZeroMat(1, outSize).Apply(func(f float64) float64 {
 			return weightInit()
 		}),
-		Activation: act,
+		Activation:      act,
+		WeightOptimizer: optFactory(),
+		BiasOptimizer:   optFactory(),
 	}
 }
 
-// NewNetwork builds a Network from a sequence of layers, defaulting
-// to BinaryCrossEntrophy loss and Gradient descent optimization.
-// Use WithLoss / WithOptimizer to override either.
-//
-// NewLayer should be used to construct each layer so that input/output
-// sizes line up; mismatched layer dimensions will cause a runtime
-// error during Train/Infer (matrix multiply shape mismatch).
-func NewNetwork(layers ...Layer) *Network {
-	return &Network{
-		Layers:    layers,
-		Loss:      BinaryCrossEntrophy{},
-		Optimizer: Gradient{Rate: 0.5},
+func NewNetwork(sizes []int) *Network {
+	layers := make([]Layer, len(sizes)-1)
+	for i := range layers {
+		layers[i] = NewLayer(sizes[i], sizes[i+1], Sigmoid{}, nil)
 	}
+	return &Network{Layers: layers, ErrorFunction: MSE{}}
 }
 
-// WithLoss sets the loss function and returns the network for chaining.
-func (nn *Network) WithLoss(l Loss) *Network {
-	nn.Loss = l
+func (nn *Network) WithErrorFunction(l ErrorFunction) *Network {
+	nn.ErrorFunction = l
 	return nn
 }
 
-// WithOptimizer sets the optimizer and returns the network for chaining.
-func (nn *Network) WithOptimizer(o Optimizer) *Network {
-	nn.Optimizer = o
+func (nn *Network) WithOptimizer(optFactory func() Optimizer) *Network {
+	for i := range nn.Layers {
+		nn.Layers[i].WeightOptimizer = optFactory()
+		nn.Layers[i].BiasOptimizer = optFactory()
+	}
+	return nn
+}
+
+func (nn *Network) WithActivation(act Activation) *Network {
+	for i := range nn.Layers {
+		nn.Layers[i].Activation = act
+	}
 	return nn
 }

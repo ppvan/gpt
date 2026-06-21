@@ -2,14 +2,14 @@ package nn
 
 import "math"
 
-type Loss interface {
-	Loss(y, pred float64) float64
+type ErrorFunction interface {
+	Forward(y, pred float64) float64
 	Derivative(y, pred float64) float64
 }
 
 type BinaryCrossEntrophy struct{}
 
-func (s BinaryCrossEntrophy) Loss(y, pred float64) float64 {
+func (s BinaryCrossEntrophy) Forward(y, pred float64) float64 {
 	return -y*math.Log(pred) - (1-y)*math.Log(1-pred)
 }
 
@@ -20,10 +20,9 @@ func (s BinaryCrossEntrophy) Derivative(y, pred float64) float64 {
 	return -y/pred + (1-y)/(1-pred)
 }
 
-// MSE: Mean Squared Error loss (per-sample, not batch-averaged)
 type MSE struct{}
 
-func (m MSE) Loss(y, pred float64) float64 {
+func (m MSE) Forward(y, pred float64) float64 {
 	diff := y - pred
 	return diff * diff
 }

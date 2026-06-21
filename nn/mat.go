@@ -116,6 +116,10 @@ func NewZeroMat(row, column int) Mat {
 	}
 }
 
+func (m Mat) Scale(s float64) Mat {
+	return m.Apply(func(v float64) float64 { return v * s })
+}
+
 func (mat Mat) String() string {
 	var sb strings.Builder
 	for i := range mat.Weights {
