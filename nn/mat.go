@@ -112,6 +112,28 @@ func (mat Mat) Scale(s float64) Mat {
 	return mat.Apply(func(v float64) float64 { return v * s })
 }
 
+// Sum returns the sum of all elements in the matrix. Useful for
+// reducing a per-sample/per-output loss matrix down to a single
+// scalar for reporting (e.g. mean loss per epoch).
+func (mat Mat) Sum() float64 {
+	var total float64
+	for _, v := range mat.weights {
+		total += v
+	}
+	return total
+}
+
+// Count returns the total number of elements in the matrix
+// (Row * Column), useful alongside Sum() to compute a mean.
+func (mat Mat) Count() int {
+	return len(mat.weights)
+}
+
+// Mean returns the average of all elements in the matrix.
+func (mat Mat) Mean() float64 {
+	return mat.Sum() / float64(mat.Count())
+}
+
 // Row returns a copy of row r as a []float64. Useful for extracting a
 // single sample's output (e.g. Infer results) without exposing the
 // underlying flat buffer.

@@ -70,14 +70,6 @@ func (nn *Network) learn(dW, db []Mat, n float64) {
 	}
 }
 
-func (nn *Network) Train(epoch int, x Mat, y Mat) {
-	batchSize := x.Row
-	for range epoch {
-		_, dW, db := nn.backprop(x, y)
-		nn.learn(dW, db, float64(batchSize))
-	}
-}
-
 func (nn *Network) Infer(input Mat) Mat {
 	a := input
 	for _, layer := range nn.Layers {
@@ -87,4 +79,46 @@ func (nn *Network) Infer(input Mat) Mat {
 		a = a.Multiply(layer.Weights).Add(b).Apply(layer.Activation.Forward)
 	}
 	return a
+}
+
+type TrainResult struct {
+	EpochLosses []float64 // mean loss per epoch
+}
+
+type TrainConfig struct {
+	BatchSize int
+
+	OnEpoch func(epoch int, meanLoss float64)
+}
+
+// Train runs gradient descent over data for the given number of
+// epochs, using mini-batches per TrainConfig. Returns per-epoch mean
+// loss for later inspection/plotting.
+func (nn *Network) Train(epochs int, data Dataset, cfg TrainConfig) TrainResult {
+	loader := NewLoader(data, cfg.BatchSize)
+	result := TrainResult{EpochLosses: make([]float64, 0, epochs)}
+
+	for epoch := 0; epoch < epochs; epoch++ {
+		batches := loader.NewEpoch()
+
+		var epochLossSum float64
+		var epochLossCount int
+
+		for _, batch := range batches {
+			lost, dW, db := nn.backprop(batch.X, batch.Y)
+			nn.learn(dW, db, float64(batch.X.Row))
+
+			epochLossSum += lost.Sum()
+			epochLossCount += lost.Count()
+		}
+
+		meanLoss := epochLossSum / float64(epochLossCount)
+		result.EpochLosses = append(result.EpochLosses, meanLoss)
+
+		if cfg.OnEpoch != nil {
+			cfg.OnEpoch(epoch, meanLoss)
+		}
+	}
+
+	return result
 }
