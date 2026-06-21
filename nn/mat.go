@@ -1,6 +1,7 @@
 package nn
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -13,7 +14,8 @@ type Mat struct {
 
 func (mat Mat) Combine(other Mat, f func(a, b float64) float64) Mat {
 	if mat.Row != other.Row || mat.Column != other.Column {
-		panic("In-compatible matrix, can't combine")
+		message := fmt.Sprintf("In-compatible matrix, can't combine (%v x %v) * (%v x %v)", mat.Row, mat.Column, other.Row, other.Column)
+		panic(message)
 	}
 	result := make([][]float64, mat.Row)
 	for i := range mat.Weights {
@@ -43,7 +45,8 @@ func (mat Mat) Hadamard(other Mat) Mat {
 
 func (mat Mat) Multiply(other Mat) Mat {
 	if mat.Column != other.Row {
-		panic("In-compatible matrix, can't multiply")
+		message := fmt.Sprintf("In-compatible matrix, can't multiply (%v x %v) * (%v x %v)", mat.Row, mat.Column, other.Row, other.Column)
+		panic(message)
 	}
 	result := make([][]float64, mat.Row)
 	for i := 0; i < mat.Row; i++ {

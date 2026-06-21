@@ -9,7 +9,7 @@ import (
 func main() {
 	xor()
 
-	nand()
+	// nand()
 }
 
 func nand() {
@@ -30,7 +30,7 @@ func nand() {
 		nn.NewLayer(4, 1, nn.Sigmoid{}),
 	)
 
-	xor.Train(10000, train_set)
+	xor.OldTrain(10000, train_set)
 
 	fmt.Println("===== FINAL PREDICTIONS =====")
 	for index := range train_set.Weights {
@@ -42,14 +42,25 @@ func nand() {
 }
 
 func xor() {
-	train_set := nn.Mat{
+	x := nn.Mat{
 		Row:    4,
-		Column: 3,
+		Column: 2,
 		Weights: [][]float64{
-			{0, 0, 0},
-			{0, 1, 1},
-			{1, 0, 1},
-			{1, 1, 0},
+			{0, 0},
+			{0, 1},
+			{1, 0},
+			{1, 1},
+		},
+	}
+
+	y := nn.Mat{
+		Row:    4,
+		Column: 1,
+		Weights: [][]float64{
+			{0},
+			{1},
+			{1},
+			{0},
 		},
 	}
 
@@ -59,13 +70,13 @@ func xor() {
 		nn.NewLayer(4, 1, nn.Sigmoid{}),
 	)
 
-	xor.Train(10000, train_set)
+	xor.Train(10000, x, y)
 
 	fmt.Println("===== FINAL PREDICTIONS =====")
-	for index := range train_set.Weights {
-		row := train_set.Weights[index]
-		x := row[:len(row)-1]
-		pred := xor.Infer(nn.NewRowMat(x))
-		fmt.Printf("%v | %v = %v\n", x[0], x[1], pred)
+	for index := range x.Weights {
+		row := x.Weights[index]
+		x := nn.NewRowMat(row)
+		pred := xor.Infer(x)
+		fmt.Printf("%v | %v = %v\n", row[0], row[1], pred)
 	}
 }

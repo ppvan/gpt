@@ -36,7 +36,7 @@ func main() {
 		nn.NewLayer(4, 1, nn.Tanh{}),
 	).WithOptimizer(nn.Gradient{Rate: 0.1}).WithLoss(nn.MSE{})
 
-	xor.Train(10000, trainSet)
+	xor.OldTrain(10000, trainSet)
 
 	fmt.Println("===== FINAL PREDICTIONS =====")
 	for index := range trainSet.Weights {
@@ -100,7 +100,7 @@ func cosine() {
 		nn.NewLayer(4, 1, nn.Tanh{}),
 	).WithOptimizer(nn.Gradient{Rate: 0.1}).WithLoss(nn.MSE{})
 
-	xor.Train(10000, trainSet)
+	xor.OldTrain(10000, trainSet)
 
 	fmt.Println("===== FINAL PREDICTIONS =====")
 	for index := range trainSet.Weights {

@@ -15,22 +15,14 @@ func weightInit() float64 {
 // size of the previous layer, or the feature count for the first layer).
 // outSize is the number of neurons in this layer.
 func NewLayer(inSize, outSize int, act Activation) Layer {
-	w := make([][]float64, outSize)
-	for r := range w {
-		w[r] = make([]float64, inSize)
-		for c := range w[r] {
-			w[r][c] = weightInit()
-		}
-	}
-
-	b := make([][]float64, outSize)
-	for r := range b {
-		b[r] = []float64{weightInit()}
-	}
 
 	return Layer{
-		Weights:    Mat{Row: outSize, Column: inSize, Weights: w},
-		Biases:     Mat{Row: outSize, Column: 1, Weights: b},
+		Weights: NewZeroMat(inSize, outSize).Apply(func(f float64) float64 {
+			return weightInit()
+		}),
+		Biases: NewZeroMat(1, outSize).Apply(func(f float64) float64 {
+			return weightInit()
+		}),
 		Activation: act,
 	}
 }
