@@ -1,5 +1,7 @@
 package main
 
+//go:generate go-winres make --product-version=git-tag
+
 import (
 	"runtime"
 

@@ -1,0 +1,129 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  GREETING: Hello, world!
+  BIN_DIR: bin
+  # Plain cross-platform CLI binaries (no GUI deps), built for the host OS/ARCH.
+  NATIVE_BINS: [logic_gates, prime]
+  # Windows-only GUI binary (windigo), always cross-compiled for windows/amd64.
+  WINDOWS_BINS: [ndigits]
+
+tasks:
+  default:
+    desc: Print a greeting message
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  build:
+    desc: Build all binaries (native CLI tools + windows GUI app)
+    deps:
+      - build:native
+      - build:windows
+
+  build:native:
+    desc: Build all native (host OS/ARCH) CLI binaries
+    cmds:
+      - for: { var: NATIVE_BINS }
+        task: build:native:one
+        vars:
+          NAME: '{{.ITEM}}'
+
+  build:native:one:
+    internal: true
+    requires:
+      vars: [NAME]
+    cmds:
+      - go build -trimpath -o {{.BIN_DIR}}/{{.NAME}} ./cmd/{{.NAME}}
+    sources:
+      - cmd/{{.NAME}}/**/*.go
+    generates:
+      - '{{.BIN_DIR}}/{{.NAME}}'
+
+  build:windows:
+    desc: Cross-compile all windows-only GUI binaries
+    deps: [winres:ndigits]
+    cmds:
+      - for: { var: WINDOWS_BINS }
+        task: build:windows:one
+        vars:
+          NAME: '{{.ITEM}}'
+
+  build:windows:one:
+    internal: true
+    requires:
+      vars: [NAME]
+    env:
+      GOOS: windows
+      GOARCH: amd64
+    cmds:
+      - go build -trimpath -ldflags "-s -w -H=windowsgui" -o {{.BIN_DIR}}/{{.NAME}}.exe ./cmd/{{.NAME}}
+    sources:
+      - cmd/{{.NAME}}/**/*.go
+    generates:
+      - '{{.BIN_DIR}}/{{.NAME}}.exe'
+
+  build:logic_gates:
+    desc: Build logic_gates
+    cmds:
+      - task: build:native:one
+        vars:
+          NAME: logic_gates
+
+  build:prime:
+    desc: Build prime
+    cmds:
+      - task: build:native:one
+        vars:
+          NAME: prime
+
+  winres:ndigits:
+    desc: Generate Windows resources (icon, manifest, version info) for ndigits
+    dir: cmd/ndigits
+    cmds:
+      - go-winres make --product-version=git-tag
+    sources:
+      - winres/**/*
+    generates:
+      - rsrc_windows_amd64.syso
+      - rsrc_windows_386.syso
+
+  build:ndigits:
+    desc: Cross-compile ndigits (windows/amd64 GUI app)
+    deps: [winres:ndigits]
+    cmds:
+      - task: build:windows:one
+        vars:
+          NAME: ndigits
+
+  run:logic_gates:
+    desc: Run logic_gates
+    cmds:
+      - go run ./cmd/logic_gates
+
+  run:prime:
+    desc: Run prime
+    cmds:
+      - go run ./cmd/prime
+
+  tidy:
+    desc: Run go mod tidy
+    cmds:
+      - go mod tidy
+
+  fmt:
+    desc: Format all Go source
+    cmds:
+      - gofmt -l -w .
+
+  vet:
+    desc: Run go vet across the module
+    cmds:
+      - go vet ./...
+
+  clean:
+    desc: Remove built binaries and generated Windows resource files
+    cmds:
+      - rm -rf {{.BIN_DIR}}
+      - rm -f cmd/ndigits/rsrc_windows_amd64.syso cmd/ndigits/rsrc_windows_386.syso
