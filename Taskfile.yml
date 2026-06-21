@@ -4,10 +4,7 @@ version: '3'
 vars:
   GREETING: Hello, world!
   BIN_DIR: bin
-  # Plain cross-platform CLI binaries (no GUI deps), built for the host OS/ARCH.
-  NATIVE_BINS: [logic_gates, prime]
-  # Windows-only GUI binary (windigo), always cross-compiled for windows/amd64.
-  WINDOWS_BINS: [ndigits]
+  CLI_BINS: [logic_gates, prime]
 
 tasks:
   default:
@@ -17,46 +14,32 @@ tasks:
     silent: true
 
   build:
-    desc: Build all binaries (native CLI tools + windows GUI app)
-    deps:
-      - build:native
-      - build:windows
-
-  build:native:
-    desc: Build all native (host OS/ARCH) CLI binaries
+    desc: Build all binaries
+    deps: [winres:ndigits]
     cmds:
-      - for: { var: NATIVE_BINS }
-        task: build:native:one
+      - for: { var: CLI_BINS }
+        task: build:cli:one
         vars:
           NAME: '{{.ITEM}}'
+      - task: build:gui:one
+        vars:
+          NAME: ndigits
 
-  build:native:one:
+  build:cli:one:
     internal: true
     requires:
       vars: [NAME]
     cmds:
-      - go build -trimpath -o {{.BIN_DIR}}/{{.NAME}} ./cmd/{{.NAME}}
+      - go build -trimpath -o {{.BIN_DIR}}/{{.NAME}}.exe ./cmd/{{.NAME}}
     sources:
       - cmd/{{.NAME}}/**/*.go
     generates:
-      - '{{.BIN_DIR}}/{{.NAME}}'
+      - '{{.BIN_DIR}}/{{.NAME}}.exe'
 
-  build:windows:
-    desc: Cross-compile all windows-only GUI binaries
-    deps: [winres:ndigits]
-    cmds:
-      - for: { var: WINDOWS_BINS }
-        task: build:windows:one
-        vars:
-          NAME: '{{.ITEM}}'
-
-  build:windows:one:
+  build:gui:one:
     internal: true
     requires:
       vars: [NAME]
-    env:
-      GOOS: windows
-      GOARCH: amd64
     cmds:
       - go build -trimpath -ldflags "-s -w -H=windowsgui" -o {{.BIN_DIR}}/{{.NAME}}.exe ./cmd/{{.NAME}}
     sources:
@@ -67,14 +50,14 @@ tasks:
   build:logic_gates:
     desc: Build logic_gates
     cmds:
-      - task: build:native:one
+      - task: build:cli:one
         vars:
           NAME: logic_gates
 
   build:prime:
     desc: Build prime
     cmds:
-      - task: build:native:one
+      - task: build:cli:one
         vars:
           NAME: prime
 
@@ -90,10 +73,10 @@ tasks:
       - rsrc_windows_386.syso
 
   build:ndigits:
-    desc: Cross-compile ndigits (windows/amd64 GUI app)
+    desc: Build ndigits
     deps: [winres:ndigits]
     cmds:
-      - task: build:windows:one
+      - task: build:gui:one
         vars:
           NAME: ndigits
 
