@@ -8,6 +8,15 @@ import (
 	"github.com/rodrigocfd/windigo/win"
 )
 
+// trainEpochs is how many epochs runTraining is asked to run for.
+const trainEpochs = 1000
+
+// redrawEveryN throttles how often we regenerate and repaint the plot
+// image while training is running. Re-rendering a 6x4in PNG on every
+// single epoch of a 1000-epoch run would be wasteful and would also
+// flood the UI thread with work; we redraw, at most, every N epochs.
+const redrawEveryN = 10
+
 // MyWindow holds the main window, its child controls, and the
 // training state accumulated so far.
 type MyWindow struct {
@@ -15,12 +24,10 @@ type MyWindow struct {
 	plotCtrl  *ui.Control // blank custom control we paint the plot image onto
 	statusLbl *ui.Static
 	trainBtn  *ui.Button
-	resetBtn  *ui.Button
 
-	epoch       int       // current epoch, starts at 0 (no training yet)
 	epochs      []float64 // epoch history: 1, 2, 3, ...
-	costs       []float64 // cost(epoch) = 1/epoch history
-	plotBmpData []byte    // BMP-encoded plot image, regenerated on each click
+	losses      []float64 // loss history, one entry per epoch
+	plotBmpData []byte    // BMP-encoded plot image, regenerated as training progresses
 }
 
 func ShowMainWindow() int {
@@ -38,24 +45,16 @@ func ShowMainWindow() int {
 
 	statusLbl := ui.NewStatic(wnd,
 		ui.OptsStatic().
-			Text("Epoch: 0    Cost: -").
+			Text("Epoch: 0    Loss: -").
 			Position(ui.Dpi(10, 460)).
-			Size(ui.Dpi(400, 23)),
+			Size(ui.Dpi(500, 23)),
 	)
 
 	trainBtn := ui.NewButton(wnd,
 		ui.OptsButton().
-			Text("Train next epoch").
+			Text("Start Training").
 			Position(ui.Dpi(10, 490)).
 			Width(ui.DpiX(200)).
-			Height(ui.DpiY(30)),
-	)
-
-	resetBtn := ui.NewButton(wnd,
-		ui.OptsButton().
-			Text("Reset").
-			Position(ui.Dpi(220, 490)).
-			Width(ui.DpiX(100)).
 			Height(ui.DpiY(30)),
 	)
 
@@ -64,7 +63,6 @@ func ShowMainWindow() int {
 		plotCtrl:  plotCtrl,
 		statusLbl: statusLbl,
 		trainBtn:  trainBtn,
-		resetBtn:  resetBtn,
 	}
 	me.events()
 	return wnd.RunAsMain()
@@ -78,23 +76,51 @@ func (me *MyWindow) events() {
 	})
 
 	me.trainBtn.On().BnClicked(func() {
-		me.epoch++
-		cost := 1.0 / float64(me.epoch)
-		me.epochs = append(me.epochs, float64(me.epoch))
-		me.costs = append(me.costs, cost)
-
-		me.statusLbl.SetTextAndResize(
-			fmt.Sprintf("Epoch: %d    Cost: %.4f", me.epoch, cost),
-		)
-		me.regeneratePlot()
-	})
-
-	me.resetBtn.On().BnClicked(func() {
-		me.epoch = 0
+		// Reset state for a fresh run.
 		me.epochs = nil
-		me.costs = nil
-		me.statusLbl.SetTextAndResize("Epoch: 0    Cost: -")
+		me.losses = nil
+		me.statusLbl.SetTextAndResize("Epoch: 0    Loss: -")
 		me.regeneratePlot()
+
+		me.trainBtn.Hwnd().EnableWindow(false)
+		me.trainBtn.SetText("Training...")
+
+		// Training is a blocking, potentially long-running call, so it
+		// must run off the UI thread. Every UI touch from inside the
+		// goroutine (including from onEpoch) must be marshaled back via
+		// wnd.UiThread, since windigo/Win32 GUI calls are not safe to
+		// make from any thread other than the one that owns the window.
+		go func() {
+			result := runTraining(trainEpochs, func(epoch int, loss float64) {
+				me.wnd.UiThread(func() {
+					me.epochs = append(me.epochs, float64(epoch))
+					me.losses = append(me.losses, loss)
+
+					me.statusLbl.SetTextAndResize(
+						fmt.Sprintf("Epoch: %d    Loss: %.6f", epoch, loss),
+					)
+
+					if epoch%redrawEveryN == 0 {
+						me.regeneratePlot()
+					}
+				})
+			})
+
+			me.wnd.UiThread(func() {
+				me.trainBtn.SetText("Start Training")
+				me.trainBtn.Hwnd().EnableWindow(true)
+
+				if result.err != nil {
+					me.statusLbl.SetTextAndResize("Training failed: " + result.err.Error())
+					return
+				}
+
+				me.statusLbl.SetTextAndResize(
+					fmt.Sprintf("Done. Final loss: %.6f", result.finalLoss),
+				)
+				me.regeneratePlot() // make sure the very last epoch is on screen
+			})
+		}()
 	})
 
 	me.plotCtrl.On().WmPaint(func() {
@@ -136,10 +162,8 @@ func (me *MyWindow) events() {
 	})
 }
 
-// regeneratePlot re-renders the cost(epoch) plot from the current
-// epoch/cost history and triggers a repaint of the image control.
 func (me *MyWindow) regeneratePlot() {
-	pngData, err := makeCostPlot(me.epochs, me.costs)
+	pngData, err := makeLossPlot(me.epochs, me.losses)
 	if err != nil {
 		panic(err)
 	}

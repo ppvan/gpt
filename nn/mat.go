@@ -168,6 +168,28 @@ func NewMat(data [][]float64) Mat {
 	return Mat{weights: flat, Row: row, Column: col}
 }
 
+// OneHot converts a single-column label matrix (Row x 1, containing
+// class indices like 0..9) into a one-hot encoded matrix
+// (Row x numClasses). Each row becomes all zeros except a 1 at the
+// column matching that sample's label.
+//
+// Panics if mat is not a single column, or if any label is out of
+// range [0, numClasses).
+func (mat Mat) OneHot(numClasses int) Mat {
+	if mat.Column != 1 {
+		panic(fmt.Sprintf("OneHot: expected a single-column matrix, got %d columns", mat.Column))
+	}
+	result := NewZeroMat(mat.Row, numClasses)
+	for i := 0; i < mat.Row; i++ {
+		label := int(mat.Get(i, 0))
+		if label < 0 || label >= numClasses {
+			panic(fmt.Sprintf("OneHot: label %d at row %d out of range [0, %d)", label, i, numClasses))
+		}
+		result.Set(i, label, 1.0)
+	}
+	return result
+}
+
 func (mat Mat) String() string {
 	var sb strings.Builder
 	for i := 0; i < mat.Row; i++ {

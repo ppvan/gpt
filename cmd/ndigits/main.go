@@ -7,7 +7,7 @@ import (
 	"github.com/rodrigocfd/windigo/win"
 )
 
-const title = "Cosine Plot"
+const title = "Digit Recognizer Training"
 
 func main() {
 	runtime.LockOSThread() // important: Windows GUI must run on a single OS thread
