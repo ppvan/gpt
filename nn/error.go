@@ -7,13 +7,13 @@ type ErrorFunction interface {
 	Derivative(y, pred float64) float64
 }
 
-type BinaryCrossEntrophy struct{}
+type BCE struct{}
 
-func (s BinaryCrossEntrophy) Forward(y, pred float64) float64 {
+func (s BCE) Forward(y, pred float64) float64 {
 	return -y*math.Log(pred) - (1-y)*math.Log(1-pred)
 }
 
-func (s BinaryCrossEntrophy) Derivative(y, pred float64) float64 {
+func (s BCE) Derivative(y, pred float64) float64 {
 	pred = math.Max(pred, 1e-15)
 	pred = math.Min(pred, 1-1e-15)
 

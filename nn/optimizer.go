@@ -21,7 +21,7 @@ type Adam struct {
 	Epsilon float64
 
 	t    int // timestep, increments each Update call
-	m, v Mat // first/second moment estimates — lazily initialized
+	m, v Mat // first/second moment estimates
 }
 
 func NewAdam(rate float64) *Adam {

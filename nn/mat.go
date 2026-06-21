@@ -112,9 +112,6 @@ func (mat Mat) Scale(s float64) Mat {
 	return mat.Apply(func(v float64) float64 { return v * s })
 }
 
-// Sum returns the sum of all elements in the matrix. Useful for
-// reducing a per-sample/per-output loss matrix down to a single
-// scalar for reporting (e.g. mean loss per epoch).
 func (mat Mat) Sum() float64 {
 	var total float64
 	for _, v := range mat.weights {
@@ -123,20 +120,14 @@ func (mat Mat) Sum() float64 {
 	return total
 }
 
-// Count returns the total number of elements in the matrix
-// (Row * Column), useful alongside Sum() to compute a mean.
 func (mat Mat) Count() int {
 	return len(mat.weights)
 }
 
-// Mean returns the average of all elements in the matrix.
 func (mat Mat) Mean() float64 {
 	return mat.Sum() / float64(mat.Count())
 }
 
-// Row returns a copy of row r as a []float64. Useful for extracting a
-// single sample's output (e.g. Infer results) without exposing the
-// underlying flat buffer.
 func (mat Mat) RowAt(r int) []float64 {
 	out := make([]float64, mat.Column)
 	copy(out, mat.weights[r*mat.Column:(r+1)*mat.Column])
@@ -161,10 +152,6 @@ func NewZeroMat(row, column int) Mat {
 	}
 }
 
-// NewMat builds a Mat from row-major nested data, e.g.
-// NewMat([][]float64{{0,0},{0,1},{1,0},{1,1}}).
-// This is the replacement for constructing Mat{Weights: [][]float64{...}}
-// literals directly, since Weights is now a flat slice.
 func NewMat(data [][]float64) Mat {
 	if len(data) == 0 {
 		return Mat{Row: 0, Column: 0}
