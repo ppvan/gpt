@@ -15,12 +15,12 @@ type Dataset struct {
 }
 
 func (d Dataset) NumSamples() int {
-	return d.X.Row
+	return d.X.Rows
 }
 
 func NewDataset(x, y Mat) Dataset {
-	if x.Row != y.Row {
-		panic(fmt.Sprintf("dataset: X has %d rows but Y has %d rows", x.Row, y.Row))
+	if x.Rows != y.Rows {
+		panic(fmt.Sprintf("dataset: X has %d rows but Y has %d rows", x.Rows, y.Rows))
 	}
 	return Dataset{X: x, Y: y}
 }

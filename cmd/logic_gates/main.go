@@ -35,7 +35,7 @@ func xor() {
 	fmt.Println("final loss:", result.EpochLosses[len(result.EpochLosses)-1])
 
 	fmt.Println("===== FINAL PREDICTIONS =====")
-	for i := 0; i < x.Row; i++ {
+	for i := 0; i < x.Rows; i++ {
 		row := x.RowAt(i)
 		input := nn.NewRowMat(row)
 		pred := xor.Infer(input)

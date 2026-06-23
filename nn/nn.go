@@ -15,7 +15,7 @@ type Network struct {
 }
 
 func (nn *Network) backprop(x, y Mat) (lost Mat, dW, db []Mat) {
-	batchSize := x.Row
+	batchSize := x.Rows
 	last := len(nn.Layers) - 1
 
 	z := make([]Mat, len(nn.Layers))
@@ -74,7 +74,7 @@ func (nn *Network) Infer(input Mat) Mat {
 	a := input
 	for _, layer := range nn.Layers {
 		// a[i+1] = forward(w[i] * a[i] + b[i])
-		one := NewZeroMat(a.Row, 1).Apply(func(f float64) float64 { return 1 })
+		one := NewZeroMat(a.Rows, 1).Apply(func(f float64) float64 { return 1 })
 		b := one.Multiply(layer.Biases)
 		a = a.Multiply(layer.Weights).Add(b).Apply(layer.Activation.Forward)
 	}
@@ -106,7 +106,7 @@ func (nn *Network) Train(epochs int, data Dataset, cfg TrainConfig) TrainResult 
 
 		for _, batch := range batches {
 			lost, dW, db := nn.backprop(batch.X, batch.Y)
-			nn.learn(dW, db, float64(batch.X.Row))
+			nn.learn(dW, db, float64(batch.X.Rows))
 
 			epochLossSum += lost.Sum()
 			epochLossCount += lost.Count()
@@ -121,4 +121,21 @@ func (nn *Network) Train(epochs int, data Dataset, cfg TrainConfig) TrainResult 
 	}
 
 	return result
+}
+
+func (n *Network) Predict(x Mat) []int {
+	output := n.Infer(x) // forward pass, shape: [rows × outputs]
+
+	preds := make([]int, output.Rows)
+	for i := range output.Rows {
+		bestCol, bestVal := 0, output.Get(i, 0)
+		for j := 1; j < output.Columns; j++ {
+			if v := output.Get(i, j); v > bestVal {
+				bestVal = v
+				bestCol = j
+			}
+		}
+		preds[i] = bestCol
+	}
+	return preds
 }

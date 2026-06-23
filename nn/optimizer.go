@@ -35,8 +35,8 @@ func NewAdam(rate float64) *Adam {
 
 func (a *Adam) Update(weight *Mat, grad Mat) {
 	if a.t == 0 {
-		a.m = NewZeroMat(grad.Row, grad.Column)
-		a.v = NewZeroMat(grad.Row, grad.Column)
+		a.m = NewZeroMat(grad.Rows, grad.Columns)
+		a.v = NewZeroMat(grad.Rows, grad.Columns)
 	}
 	a.t++
 

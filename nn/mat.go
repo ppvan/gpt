@@ -8,13 +8,13 @@ import (
 
 type Mat struct {
 	weights []float64
-	Row     int
-	Column  int
+	Rows    int
+	Columns int
 }
 
 // at returns the flat index for element (r, c).
 func (mat Mat) at(r, c int) int {
-	return r*mat.Column + c
+	return r*mat.Columns + c
 }
 
 // Get returns the element at row r, column c.
@@ -28,8 +28,8 @@ func (mat Mat) Set(r, c int, v float64) {
 }
 
 func (mat Mat) Combine(other Mat, f func(a, b float64) float64) Mat {
-	if mat.Row != other.Row || mat.Column != other.Column {
-		message := fmt.Sprintf("In-compatible matrix, can't combine (%v x %v) * (%v x %v)", mat.Row, mat.Column, other.Row, other.Column)
+	if mat.Rows != other.Rows || mat.Columns != other.Columns {
+		message := fmt.Sprintf("In-compatible matrix, can't combine (%v x %v) * (%v x %v)", mat.Rows, mat.Columns, other.Rows, other.Columns)
 		panic(message)
 	}
 	result := make([]float64, len(mat.weights))
@@ -38,8 +38,8 @@ func (mat Mat) Combine(other Mat, f func(a, b float64) float64) Mat {
 	}
 	return Mat{
 		weights: result,
-		Row:     mat.Row,
-		Column:  mat.Column,
+		Rows:    mat.Rows,
+		Columns: mat.Columns,
 	}
 }
 
@@ -56,43 +56,43 @@ func (mat Mat) Hadamard(other Mat) Mat {
 }
 
 func (mat Mat) Multiply(other Mat) Mat {
-	if mat.Column != other.Row {
-		message := fmt.Sprintf("In-compatible matrix, can't multiply (%v x %v) * (%v x %v)", mat.Row, mat.Column, other.Row, other.Column)
+	if mat.Columns != other.Rows {
+		message := fmt.Sprintf("In-compatible matrix, can't multiply (%v x %v) * (%v x %v)", mat.Rows, mat.Columns, other.Rows, other.Columns)
 		panic(message)
 	}
-	result := make([]float64, mat.Row*other.Column)
-	for i := 0; i < mat.Row; i++ {
-		for k := 0; k < mat.Column; k++ {
-			aik := mat.weights[i*mat.Column+k]
+	result := make([]float64, mat.Rows*other.Columns)
+	for i := 0; i < mat.Rows; i++ {
+		for k := 0; k < mat.Columns; k++ {
+			aik := mat.weights[i*mat.Columns+k]
 			if aik == 0 {
 				continue // cheap skip; harmless if dense, helps if sparse-ish
 			}
-			rowOffset := i * other.Column
-			otherOffset := k * other.Column
-			for j := 0; j < other.Column; j++ {
+			rowOffset := i * other.Columns
+			otherOffset := k * other.Columns
+			for j := 0; j < other.Columns; j++ {
 				result[rowOffset+j] += aik * other.weights[otherOffset+j]
 			}
 		}
 	}
 	return Mat{
 		weights: result,
-		Row:     mat.Row,
-		Column:  other.Column,
+		Rows:    mat.Rows,
+		Columns: other.Columns,
 	}
 }
 
 func (mat Mat) Transpose() Mat {
 	result := make([]float64, len(mat.weights))
-	for i := 0; i < mat.Row; i++ {
-		for j := 0; j < mat.Column; j++ {
+	for i := 0; i < mat.Rows; i++ {
+		for j := 0; j < mat.Columns; j++ {
 			// (j, i) in the transposed (Column x Row) matrix
-			result[j*mat.Row+i] = mat.weights[i*mat.Column+j]
+			result[j*mat.Rows+i] = mat.weights[i*mat.Columns+j]
 		}
 	}
 	return Mat{
 		weights: result,
-		Row:     mat.Column,
-		Column:  mat.Row,
+		Rows:    mat.Columns,
+		Columns: mat.Rows,
 	}
 }
 
@@ -103,8 +103,8 @@ func (mat Mat) Apply(fn func(float64) float64) Mat {
 	}
 	return Mat{
 		weights: result,
-		Row:     mat.Row,
-		Column:  mat.Column,
+		Rows:    mat.Rows,
+		Columns: mat.Columns,
 	}
 }
 
@@ -129,8 +129,8 @@ func (mat Mat) Mean() float64 {
 }
 
 func (mat Mat) RowAt(r int) []float64 {
-	out := make([]float64, mat.Column)
-	copy(out, mat.weights[r*mat.Column:(r+1)*mat.Column])
+	out := make([]float64, mat.Columns)
+	copy(out, mat.weights[r*mat.Columns:(r+1)*mat.Columns])
 	return out
 }
 
@@ -139,22 +139,22 @@ func NewRowMat(data []float64) Mat {
 	copy(w, data)
 	return Mat{
 		weights: w,
-		Row:     1,
-		Column:  len(data),
+		Rows:    1,
+		Columns: len(data),
 	}
 }
 
 func NewZeroMat(row, column int) Mat {
 	return Mat{
 		weights: make([]float64, row*column),
-		Row:     row,
-		Column:  column,
+		Rows:    row,
+		Columns: column,
 	}
 }
 
 func NewMat(data [][]float64) Mat {
 	if len(data) == 0 {
-		return Mat{Row: 0, Column: 0}
+		return Mat{Rows: 0, Columns: 0}
 	}
 	row := len(data)
 	col := len(data[0])
@@ -165,7 +165,7 @@ func NewMat(data [][]float64) Mat {
 		}
 		flat = append(flat, r...)
 	}
-	return Mat{weights: flat, Row: row, Column: col}
+	return Mat{weights: flat, Rows: row, Columns: col}
 }
 
 // OneHot converts a single-column label matrix (Row x 1, containing
@@ -176,11 +176,11 @@ func NewMat(data [][]float64) Mat {
 // Panics if mat is not a single column, or if any label is out of
 // range [0, numClasses).
 func (mat Mat) OneHot(numClasses int) Mat {
-	if mat.Column != 1 {
-		panic(fmt.Sprintf("OneHot: expected a single-column matrix, got %d columns", mat.Column))
+	if mat.Columns != 1 {
+		panic(fmt.Sprintf("OneHot: expected a single-column matrix, got %d columns", mat.Columns))
 	}
-	result := NewZeroMat(mat.Row, numClasses)
-	for i := 0; i < mat.Row; i++ {
+	result := NewZeroMat(mat.Rows, numClasses)
+	for i := 0; i < mat.Rows; i++ {
 		label := int(mat.Get(i, 0))
 		if label < 0 || label >= numClasses {
 			panic(fmt.Sprintf("OneHot: label %d at row %d out of range [0, %d)", label, i, numClasses))
@@ -192,16 +192,16 @@ func (mat Mat) OneHot(numClasses int) Mat {
 
 func (mat Mat) String() string {
 	var sb strings.Builder
-	for i := 0; i < mat.Row; i++ {
+	for i := 0; i < mat.Rows; i++ {
 		sb.WriteString("[")
-		for j := 0; j < mat.Column; j++ {
+		for j := 0; j < mat.Columns; j++ {
 			if j > 0 {
 				sb.WriteString(", ")
 			}
 			sb.WriteString(strconv.FormatFloat(mat.Get(i, j), 'f', 2, 64))
 		}
 		sb.WriteString("]")
-		if i < mat.Row-1 {
+		if i < mat.Rows-1 {
 			sb.WriteString("\n")
 		}
 	}
