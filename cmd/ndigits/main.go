@@ -7,45 +7,32 @@ import (
 )
 
 func main() {
-	xor()
-	// nand()
-}
 
-func xor() {
-	x := nn.NewMat([][]float64{
-		{0, 0}, {0, 1}, {1, 0}, {1, 1},
+	data, err := nn.LoadCSV("cmd/ndigits/digits.csv", 64, false)
+	data = data.Shuffle().Transform(func(x, y nn.Mat) (nn.Mat, nn.Mat) {
+		return x, y.OneHot(10)
 	})
-	labels := nn.NewMat([][]float64{
-		{0},
-		{1},
-		{1},
-		{0},
-	})
-	y := labels.OneHot(2)
+
+	if err != nil {
+		panic(err)
+	}
+
+	train, _, _ := data.Split(0.75, 0.15, 0.10)
 
 	model := nn.NewSequential(
-		nn.NewLinear(2, 4),
+		nn.NewLinear(64, 10),
 		nn.Sigmoid(),
-		nn.NewLinear(4, 4),
+		nn.NewLinear(10, 10),
 		nn.Sigmoid(),
-		nn.NewLinear(4, 2),
+		nn.NewLinear(10, 10),
 	)
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
+	epochs := 10000
+	batchSize := 10
 
-	net.Train(100000, x, y, func(epoch int, loss float64) {
-		fmt.Printf("epoch %d: loss=%.6f\r", epoch, loss)
-	})
-
-	fmt.Println()
-
-	fmt.Println("===== FINAL PREDICTIONS =====")
-	for i := 0; i < x.Rows; i++ {
-		row := x.RowAt(i)
-		input := nn.NewRowMat(row)
-
-		logits := net.Infer(input)
-		class := logits.ArgMax().Get(0, 0)
-		fmt.Printf("%v | %v = %v\n", row[0], row[1], class)
+	for m := range net.Fit(train, epochs, batchSize) {
+		fmt.Printf("epoch=%d loss=%.4f\r", m.Epoch, m.Loss)
 	}
+	fmt.Println()
 }

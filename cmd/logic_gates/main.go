@@ -23,6 +23,10 @@ func xor() {
 	})
 	y := labels.OneHot(2)
 
+	data := nn.Data{
+		X: x, Y: y,
+	}
+
 	model := nn.NewSequential(
 		nn.NewLinear(2, 4),
 		nn.Sigmoid(),
@@ -33,10 +37,9 @@ func xor() {
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
 
-	net.Train(100000, x, y, func(epoch int, loss float64) {
-		fmt.Printf("epoch %d: loss=%.6f\r", epoch, loss)
-	})
-
+	for m := range net.Fit(data, 10240, 32) {
+		fmt.Printf("epoch=%d loss=%.4f\r", m.Epoch, m.Loss)
+	}
 	fmt.Println()
 
 	fmt.Println("===== FINAL PREDICTIONS =====")

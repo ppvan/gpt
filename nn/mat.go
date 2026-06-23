@@ -196,13 +196,16 @@ func (mat Mat) OneHot(numClasses int) Mat {
 	}
 	return result
 }
-
 func (mat Mat) Slice(start, end int) Mat {
+	if start < 0 || end > mat.Rows || start > end {
+		panic("invalid slice range")
+	}
+
 	result := NewZeroMat(end-start, mat.Columns)
 
-	for r := 0; r < mat.Rows; r++ {
-		for c := 1; c < mat.Columns; c++ {
-			result.Set(r, c, mat.Get(r, c))
+	for r := 0; r < result.Rows; r++ {
+		for c := 0; c < mat.Columns; c++ {
+			result.Set(r, c, mat.Get(start+r, c))
 		}
 	}
 
