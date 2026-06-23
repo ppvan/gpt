@@ -2,21 +2,6 @@ package nn
 
 import "math"
 
-type Activation interface {
-	Forward(x float64) float64
-	Derivative(x float64) float64
-}
-
-type Sigmoid3 struct{}
-
-func (s Sigmoid3) Forward(x float64) float64 {
-	return float64(1 / (math.Exp(-x) + 1))
-}
-func (s Sigmoid3) Derivative(x float64) float64 {
-	y := s.Forward(x)
-	return y * (1 - y)
-}
-
 type sigmoid struct {
 	lastOut Mat
 }
@@ -38,4 +23,34 @@ func (s *sigmoid) Backward(dOut Mat) Mat {
 
 func Sigmoid() *sigmoid {
 	return &sigmoid{}
+}
+
+type relu struct {
+	lastInput Mat
+}
+
+func (r *relu) Forward(x Mat) Mat {
+	r.lastInput = x
+
+	return x.Apply(func(v float64) float64 {
+		if v > 0 {
+			return v
+		}
+		return 0
+	})
+}
+
+func (r *relu) Backward(dOut Mat) Mat {
+	return dOut.Hadamard(
+		r.lastInput.Apply(func(v float64) float64 {
+			if v > 0 {
+				return 1
+			}
+			return 0
+		}),
+	)
+}
+
+func ReLU() *relu {
+	return &relu{}
 }

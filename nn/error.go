@@ -68,61 +68,79 @@ type crossEntropyLoss struct{}
 
 func (c crossEntropyLoss) Forward(logits, target Mat) Mat {
 	out := NewZeroMat(logits.Rows, 1)
+
 	for i := 0; i < logits.Rows; i++ {
-		// log-sum-exp trick for stability
+
+		// ---- log-sum-exp for stability ----
 		max := logits.Get(i, 0)
 		for j := 1; j < logits.Columns; j++ {
 			if v := logits.Get(i, j); v > max {
 				max = v
 			}
 		}
+
 		sumExp := 0.0
 		for j := 0; j < logits.Columns; j++ {
 			sumExp += math.Exp(logits.Get(i, j) - max)
 		}
+
 		logSumExp := max + math.Log(sumExp)
 
-		// NLL: -sum(target * log_softmax)
-		loss := 0.0
-		for j := 0; j < logits.Columns; j++ {
-			if target.Get(i, j) > 0 { // skip zeros (one-hot)
-				loss -= target.Get(i, j) * (logits.Get(i, j) - logSumExp)
-			}
-		}
+		// ---- index-based NLL ----
+		t := int(target.Get(i, 0))
+		loss := -(logits.Get(i, t) - logSumExp)
+
 		out.Set(i, 0, loss)
 	}
+
 	return out
 }
 
 func (c crossEntropyLoss) Backward(logits, target Mat) Mat {
-	// Compute softmax(logits) first
+
 	probs := NewZeroMat(logits.Rows, logits.Columns)
+
+	// ---- softmax ----
 	for i := 0; i < logits.Rows; i++ {
+
 		max := logits.Get(i, 0)
 		for j := 1; j < logits.Columns; j++ {
 			if v := logits.Get(i, j); v > max {
 				max = v
 			}
 		}
+
 		sumExp := 0.0
 		for j := 0; j < logits.Columns; j++ {
 			v := math.Exp(logits.Get(i, j) - max)
 			probs.Set(i, j, v)
 			sumExp += v
 		}
+
 		for j := 0; j < logits.Columns; j++ {
 			probs.Set(i, j, probs.Get(i, j)/sumExp)
 		}
 	}
 
-	// Gradient: (softmax(logits) - target) / batchSize
+	// ---- gradient: (softmax - one_hot) / batch ----
 	out := NewZeroMat(logits.Rows, logits.Columns)
 	scale := 1.0 / float64(logits.Rows)
+
 	for i := 0; i < logits.Rows; i++ {
+
+		t := int(target.Get(i, 0))
+
 		for j := 0; j < logits.Columns; j++ {
-			out.Set(i, j, scale*(probs.Get(i, j)-target.Get(i, j)))
+			grad := probs.Get(i, j)
+
+			if j == t {
+				grad -= 1.0
+			}
+
+			out.Set(i, j, scale*grad)
 		}
 	}
+
 	return out
 }
 

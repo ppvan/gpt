@@ -55,41 +55,57 @@ func (mat Mat) Sub(other Mat) Mat {
 func (mat Mat) Hadamard(other Mat) Mat {
 	return mat.Combine(other, func(a, b float64) float64 { return a * b })
 }
-
 func (mat Mat) Multiply(other Mat) Mat {
 	if mat.Columns != other.Rows {
-		message := fmt.Sprintf("In-compatible matrix, can't multiply (%v x %v) * (%v x %v)", mat.Rows, mat.Columns, other.Rows, other.Columns)
-		panic(message)
+		panic("incompatible matrices")
 	}
-	result := make([]float64, mat.Rows*other.Columns)
-	for i := 0; i < mat.Rows; i++ {
-		for k := 0; k < mat.Columns; k++ {
-			aik := mat.weights[i*mat.Columns+k]
+
+	m, n, p := mat.Rows, mat.Columns, other.Columns
+
+	result := make([]float64, m*p)
+
+	a := mat.weights
+	b := other.weights
+
+	for i := 0; i < m; i++ {
+		aRow := i * n
+		cRow := i * p
+
+		for k := 0; k < n; k++ {
+			aik := a[aRow+k]
 			if aik == 0 {
-				continue // cheap skip; harmless if dense, helps if sparse-ish
+				continue
 			}
-			rowOffset := i * other.Columns
-			otherOffset := k * other.Columns
-			for j := 0; j < other.Columns; j++ {
-				result[rowOffset+j] += aik * other.weights[otherOffset+j]
+
+			bRow := k * p
+
+			// local variables reduce repeated slice access
+			for j := 0; j < p; j++ {
+				result[cRow+j] += aik * b[bRow+j]
 			}
 		}
 	}
+
 	return Mat{
 		weights: result,
-		Rows:    mat.Rows,
-		Columns: other.Columns,
+		Rows:    m,
+		Columns: p,
 	}
 }
 
 func (mat Mat) Transpose() Mat {
 	result := make([]float64, len(mat.weights))
-	for i := 0; i < mat.Rows; i++ {
-		for j := 0; j < mat.Columns; j++ {
-			// (j, i) in the transposed (Column x Row) matrix
-			result[j*mat.Rows+i] = mat.weights[i*mat.Columns+j]
+
+	rows, cols := mat.Rows, mat.Columns
+	src := mat.weights
+
+	for i := 0; i < rows; i++ {
+		rowOffset := i * cols
+		for j := 0; j < cols; j++ {
+			result[j*rows+i] = src[rowOffset+j]
 		}
 	}
+
 	return Mat{
 		weights: result,
 		Rows:    mat.Columns,
@@ -201,13 +217,13 @@ func (mat Mat) Slice(start, end int) Mat {
 		panic("invalid slice range")
 	}
 
-	result := NewZeroMat(end-start, mat.Columns)
+	rows := end - start
+	result := NewZeroMat(rows, mat.Columns)
 
-	for r := 0; r < result.Rows; r++ {
-		for c := 0; c < mat.Columns; c++ {
-			result.Set(r, c, mat.Get(start+r, c))
-		}
-	}
+	copy(
+		result.weights,
+		mat.weights[start*mat.Columns:end*mat.Columns],
+	)
 
 	return result
 }

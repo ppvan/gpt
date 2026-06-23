@@ -12,6 +12,31 @@ func NewNetwork(model *Sequential, loss LossFunction) *Network {
 func (n *Network) Infer(x Mat) Mat {
 	return n.model.Forward(x)
 }
+
+func (n *Network) Predict(x Mat) Mat {
+	logits := n.Infer(x)
+
+	// output: batch x 1 (class index)
+	out := NewZeroMat(logits.Rows, 1)
+
+	for i := 0; i < logits.Rows; i++ {
+		maxIdx := 0
+		maxVal := logits.Get(i, 0)
+
+		for j := 1; j < logits.Columns; j++ {
+			v := logits.Get(i, j)
+			if v > maxVal {
+				maxVal = v
+				maxIdx = j
+			}
+		}
+
+		out.Set(i, 0, float64(maxIdx))
+	}
+
+	return out
+}
+
 func (n *Network) Fit(data Data, epochs int, batchSize int) <-chan EpochMetrics {
 	out := make(chan EpochMetrics)
 

@@ -9,30 +9,39 @@ import (
 func main() {
 
 	data, err := nn.LoadCSV("cmd/ndigits/digits.csv", 64, false)
-	data = data.Shuffle().Transform(func(x, y nn.Mat) (nn.Mat, nn.Mat) {
-		return x, y.OneHot(10)
-	})
-
 	if err != nil {
 		panic(err)
 	}
 
-	train, _, _ := data.Split(0.75, 0.15, 0.10)
+	data = data.Shuffle()
+
+	train, val, _ := data.Split(0.75, 0.15, 0.10)
 
 	model := nn.NewSequential(
-		nn.NewLinear(64, 10),
+		nn.NewLinear(64, 128),
 		nn.Sigmoid(),
-		nn.NewLinear(10, 10),
+		nn.NewLinear(128, 64),
+		nn.Sigmoid(),
+		nn.NewLinear(64, 10),
 		nn.Sigmoid(),
 		nn.NewLinear(10, 10),
 	)
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
-	epochs := 10000
-	batchSize := 10
+
+	epochs := 1000
+	batchSize := 32
 
 	for m := range net.Fit(train, epochs, batchSize) {
 		fmt.Printf("epoch=%d loss=%.4f\r", m.Epoch, m.Loss)
 	}
+
 	fmt.Println()
+
+	// ---- EVALUATION ----
+
+	pred := net.Predict(val.X)
+	acc := nn.Accuracy(pred, val.Y)
+
+	fmt.Printf("Validation accuracy: %.2f%%\n", acc*100)
 }

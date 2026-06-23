@@ -20,8 +20,8 @@ func NewLinear(inputs, outputs int) *LinearLayer {
 	return &LinearLayer{
 		Weights:         randomMat(inputs, outputs),
 		Biases:          randomMat(1, outputs),
-		weightOptimizer: &Gradient{Rate: 0.05},
-		biasOptimizer:   &Gradient{Rate: 0.05},
+		weightOptimizer: &Gradient{Rate: 0.5},
+		biasOptimizer:   &Gradient{Rate: 0.5},
 	}
 }
 
