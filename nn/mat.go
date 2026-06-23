@@ -2,6 +2,7 @@ package nn
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
 	"strings"
 )
@@ -154,7 +155,7 @@ func NewZeroMat(row, column int) Mat {
 
 func randomMat(row, column int) Mat {
 	return NewZeroMat(row, column).Apply(func(f float64) float64 {
-		return weightInit()
+		return rand.Float64()*2 - 1
 	})
 }
 
