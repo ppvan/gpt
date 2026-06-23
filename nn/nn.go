@@ -65,8 +65,8 @@ func (nn *Network) backprop(x, y Mat) (lost Mat, dW, db []Mat) {
 
 func (nn *Network) learn(dW, db []Mat, n float64) {
 	for j := range nn.Layers {
-		nn.Layers[j].WeightOptimizer.Update(&nn.Layers[j].Weights, dW[j].Scale(1/n))
-		nn.Layers[j].BiasOptimizer.Update(&nn.Layers[j].Biases, db[j].Scale(1/n))
+		nn.Layers[j].Weights = nn.Layers[j].WeightOptimizer.Update(nn.Layers[j].Weights, dW[j].Scale(1/n))
+		nn.Layers[j].Biases = nn.Layers[j].BiasOptimizer.Update(nn.Layers[j].Biases, db[j].Scale(1/n))
 	}
 }
 
@@ -91,10 +91,10 @@ type TrainConfig struct {
 	OnEpoch func(epoch int, meanLoss float64)
 }
 
-// Train runs gradient descent over data for the given number of
+// Train3 runs gradient descent over data for the given number of
 // epochs, using mini-batches per TrainConfig. Returns per-epoch mean
 // loss for later inspection/plotting.
-func (nn *Network) Train(epochs int, data Dataset, cfg TrainConfig) TrainResult {
+func (nn *Network) Train3(epochs int, data Dataset, cfg TrainConfig) TrainResult {
 	loader := NewLoader(data, cfg.BatchSize)
 	result := TrainResult{EpochLosses: make([]float64, 0, epochs)}
 
@@ -138,4 +138,48 @@ func (n *Network) Predict(x Mat) []int {
 		preds[i] = bestCol
 	}
 	return preds
+}
+
+type Network2 struct {
+	model *Sequential
+	loss  LossFunction
+}
+
+func NewNetwork(model *Sequential, loss LossFunction) *Network2 {
+	return &Network2{model: model, loss: loss}
+}
+
+func (n *Network2) Infer(x Mat) Mat {
+	return n.model.Forward(x)
+}
+
+func (n *Network2) Predict(x Mat) []int {
+	output := n.Infer(x)
+
+	preds := make([]int, output.Rows)
+	for i := 0; i < output.Rows; i++ {
+		bestCol, bestVal := 0, output.Get(i, 0)
+		for j := 1; j < output.Columns; j++ {
+			if v := output.Get(i, j); v > bestVal {
+				bestVal = v
+				bestCol = j
+			}
+		}
+		preds[i] = bestCol
+	}
+	return preds
+}
+
+func (n *Network2) Train(epochs int, x, y Mat, callback func(epoch int, loss float64)) {
+	for epoch := range epochs {
+
+		out := n.model.Forward(x)
+		loss := n.loss.Forward(out, y).Mean()
+		dOut := n.loss.Backward(out, y)
+		n.model.Backward(dOut)
+
+		if callback != nil {
+			callback(epoch, loss)
+		}
+	}
 }

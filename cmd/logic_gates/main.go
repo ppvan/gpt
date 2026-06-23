@@ -15,30 +15,37 @@ func xor() {
 	x := nn.NewMat([][]float64{
 		{0, 0}, {0, 1}, {1, 0}, {1, 1},
 	})
-	y := nn.NewMat([][]float64{
-		{0}, {1}, {1}, {0},
+	labels := nn.NewMat([][]float64{
+		{0},
+		{1},
+		{1},
+		{0},
+	})
+	y := labels.OneHot(2)
+
+	model := nn.NewSequential(
+		nn.NewLinear(2, 4),
+		nn.Sigmoid(),
+		nn.NewLinear(4, 4),
+		nn.Sigmoid(),
+		nn.NewLinear(4, 2),
+	)
+
+	net := nn.NewNetwork(model, nn.CrossEntropy())
+
+	net.Train(100000, x, y, func(epoch int, loss float64) {
+		fmt.Printf("epoch %d: loss=%.6f\r", epoch, loss)
 	})
 
-	data := nn.NewDataset(x, y)
-	xor := nn.NewNetwork([]int{2, 4, 4, 1})
-
-	result := xor.Train(100000, data, nn.TrainConfig{
-		BatchSize: 0, // full-batch, same behavior as before
-		OnEpoch: func(epoch int, loss float64) {
-			if epoch%10000 == 0 {
-				fmt.Printf("epoch %d: loss=%.6f\r", epoch, loss)
-			}
-		},
-	})
 	fmt.Println()
-
-	fmt.Println("final loss:", result.EpochLosses[len(result.EpochLosses)-1])
 
 	fmt.Println("===== FINAL PREDICTIONS =====")
 	for i := 0; i < x.Rows; i++ {
 		row := x.RowAt(i)
 		input := nn.NewRowMat(row)
-		pred := xor.Infer(input)
-		fmt.Printf("%v | %v = %v\n", row[0], row[1], pred)
+
+		logits := net.Infer(input)
+		class := logits.ArgMax().Get(0, 0)
+		fmt.Printf("%v | %v = %v\n", row[0], row[1], class)
 	}
 }

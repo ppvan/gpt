@@ -32,8 +32,8 @@ func runTraining(epochs int, onEpoch func(epoch int, loss float64)) trainResult 
 	y := raw.Y.OneHot(10) // 1796x1 labels -> 1796x10 one-hot
 	data := nn.NewDataset(raw.X, y)
 
-	ndigit := nn.NewNetwork([]int{64, 32, 10})
-	result := ndigit.Train(epochs, data, nn.TrainConfig{
+	ndigit := nn.NewNetwork3([]int{64, 32, 10})
+	result := ndigit.Train3(epochs, data, nn.TrainConfig{
 		BatchSize: 100,
 		OnEpoch:   onEpoch,
 	})

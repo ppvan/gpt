@@ -152,6 +152,12 @@ func NewZeroMat(row, column int) Mat {
 	}
 }
 
+func randomMat(row, column int) Mat {
+	return NewZeroMat(row, column).Apply(func(f float64) float64 {
+		return weightInit()
+	})
+}
+
 func NewMat(data [][]float64) Mat {
 	if len(data) == 0 {
 		return Mat{Rows: 0, Columns: 0}
@@ -187,6 +193,43 @@ func (mat Mat) OneHot(numClasses int) Mat {
 		}
 		result.Set(i, label, 1.0)
 	}
+	return result
+}
+
+func (mat Mat) Slice(start, end int) Mat {
+	result := NewZeroMat(end-start, mat.Columns)
+
+	for r := 0; r < mat.Rows; r++ {
+		for c := 1; c < mat.Columns; c++ {
+			result.Set(r, c, mat.Get(r, c))
+		}
+	}
+
+	return result
+}
+
+func (mat Mat) ArgMax() Mat {
+	if mat.Columns == 0 {
+		panic("ArgMax: matrix has no columns")
+	}
+
+	result := NewZeroMat(mat.Rows, 1)
+
+	for r := 0; r < mat.Rows; r++ {
+		maxIdx := 0
+		maxVal := mat.Get(r, 0)
+
+		for c := 1; c < mat.Columns; c++ {
+			v := mat.Get(r, c)
+			if v > maxVal {
+				maxVal = v
+				maxIdx = c
+			}
+		}
+
+		result.Set(r, 0, float64(maxIdx))
+	}
+
 	return result
 }
 

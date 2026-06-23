@@ -64,11 +64,11 @@ func primes() {
 	data := nn.NewDataset(x, y)
 
 	// 7 input features -> two hidden layers -> 1 output (prime/not-prime)
-	net := nn.NewNetwork([]int{7, 16, 8, 1}).
+	net := nn.NewNetwork3([]int{7, 16, 8, 1}).
 		WithErrorFunction(nn.MSE{}). // swap for nn.BCE{} if you have a binary cross-entropy Loss impl
 		WithOptimizer(func() nn.Optimizer { return &nn.Gradient{Rate: 0.5} })
 
-	result := net.Train(5000, data, nn.TrainConfig{
+	result := net.Train3(5000, data, nn.TrainConfig{
 		BatchSize: 16,
 		OnEpoch: func(epoch int, loss float64) {
 			if epoch%500 == 0 {

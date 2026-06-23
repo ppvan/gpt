@@ -27,10 +27,10 @@ func NewLayer(inSize, outSize int, act Activation, optFactory func() Optimizer) 
 	}
 }
 
-func NewNetwork(sizes []int) *Network {
+func NewNetwork3(sizes []int) *Network {
 	layers := make([]Layer, len(sizes)-1)
 	for i := range layers {
-		layers[i] = NewLayer(sizes[i], sizes[i+1], Sigmoid{}, nil)
+		layers[i] = NewLayer(sizes[i], sizes[i+1], Sigmoid3{}, nil)
 	}
 	return &Network{Layers: layers, ErrorFunction: MSE{}}
 }
