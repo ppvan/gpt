@@ -29,7 +29,7 @@ func main() {
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
 
-	epochs := 500
+	epochs := 50
 	batchSize := 16
 
 	for m := range net.Fit(train, epochs, batchSize) {
@@ -40,8 +40,7 @@ func main() {
 
 	// ---- EVALUATION ----
 
-	pred := net.Predict(val.X)
-	acc := nn.Accuracy(pred, val.Y)
+	metrics := net.Evaluate(val)
 
-	fmt.Printf("Validation accuracy: %.2f%%\n", acc*100)
+	fmt.Println(metrics)
 }

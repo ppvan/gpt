@@ -2,11 +2,6 @@ package nn
 
 import "math"
 
-type LossFunction interface {
-	Forward(pred, target Mat) Mat  // returns per-sample loss, shape (rows x 1)
-	Backward(pred, target Mat) Mat // returns gradient w.r.t pred, shape same as pred
-}
-
 type meanSquareError struct{}
 
 func (m meanSquareError) Forward(pred, target Mat) Mat {

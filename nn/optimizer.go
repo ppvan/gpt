@@ -1,9 +1,5 @@
 package nn
 
-type Optimizer interface {
-	Update(weight Mat, grad Mat) Mat
-}
-
 type Gradient struct {
 	Rate float64
 }

@@ -246,6 +246,24 @@ func (mat Mat) ArgMax() Mat {
 	return result
 }
 
+func AppendRows(a, b Mat) Mat {
+	if a.Rows == 0 {
+		return b
+	}
+	result := NewZeroMat(a.Rows+b.Rows, a.Columns)
+	for i := range a.Rows {
+		for j := range a.Columns {
+			result.Set(i, j, a.Get(i, j))
+		}
+	}
+	for i := range b.Rows {
+		for j := range b.Columns {
+			result.Set(a.Rows+i, j, b.Get(i, j))
+		}
+	}
+	return result
+}
+
 func (mat Mat) String() string {
 	var sb strings.Builder
 	for i := 0; i < mat.Rows; i++ {

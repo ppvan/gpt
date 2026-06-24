@@ -1,10 +1,5 @@
 package nn
 
-type Module interface {
-	Forward(x Mat) Mat
-	Backward(dOut Mat) Mat
-}
-
 type LinearLayer struct {
 	Weights Mat
 	Biases  Mat
