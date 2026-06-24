@@ -15,7 +15,7 @@ func main() {
 
 	data = data.Shuffle()
 
-	train, val, _ := data.Split(0.75, 0.15, 0.10)
+	train, val, _ := data.Split(0.80, 0.20, 0)
 
 	model := nn.NewSequential(
 		nn.NewLinear(64, 128),
@@ -29,8 +29,8 @@ func main() {
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
 
-	epochs := 1000
-	batchSize := 32
+	epochs := 500
+	batchSize := 16
 
 	for m := range net.Fit(train, epochs, batchSize) {
 		fmt.Printf("epoch=%d loss=%.4f\r", m.Epoch, m.Loss)

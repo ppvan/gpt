@@ -2,45 +2,14 @@ package nn
 
 import "math"
 
-type ErrorFunction interface {
-	Forward(y, pred float64) float64
-	Derivative(y, pred float64) float64
-}
-
-type BCE struct{}
-
-func (s BCE) Forward(y, pred float64) float64 {
-	return -y*math.Log(pred) - (1-y)*math.Log(1-pred)
-}
-
-func (s BCE) Derivative(y, pred float64) float64 {
-	pred = math.Max(pred, 1e-15)
-	pred = math.Min(pred, 1-1e-15)
-
-	return -y/pred + (1-y)/(1-pred)
-}
-
-type MSE struct{}
-
-func (m MSE) Forward(y, pred float64) float64 {
-	diff := y - pred
-	return diff * diff
-}
-
-func (m MSE) Derivative(y, pred float64) float64 {
-	// d/dpred (y - pred)^2 = -2*(y - pred) = 2*(pred - y)
-	return 2 * (pred - y)
-}
-
 type LossFunction interface {
 	Forward(pred, target Mat) Mat  // returns per-sample loss, shape (rows x 1)
 	Backward(pred, target Mat) Mat // returns gradient w.r.t pred, shape same as pred
 }
 
-// MSE loss — for regression
-type MSE2 struct{}
+type meanSquareError struct{}
 
-func (m MSE2) Forward(pred, target Mat) Mat {
+func (m meanSquareError) Forward(pred, target Mat) Mat {
 	out := NewZeroMat(pred.Rows, 1)
 	for i := 0; i < pred.Rows; i++ {
 		sum := 0.0
@@ -53,7 +22,7 @@ func (m MSE2) Forward(pred, target Mat) Mat {
 	return out
 }
 
-func (m MSE2) Backward(pred, target Mat) Mat {
+func (m meanSquareError) Backward(pred, target Mat) Mat {
 	scale := 2.0 / float64(pred.Columns)
 	out := NewZeroMat(pred.Rows, pred.Columns)
 	for i := 0; i < pred.Rows; i++ {
@@ -64,83 +33,55 @@ func (m MSE2) Backward(pred, target Mat) Mat {
 	return out
 }
 
-type crossEntropyLoss struct{}
-
-func (c crossEntropyLoss) Forward(logits, target Mat) Mat {
-	out := NewZeroMat(logits.Rows, 1)
-
-	for i := 0; i < logits.Rows; i++ {
-
-		// ---- log-sum-exp for stability ----
-		max := logits.Get(i, 0)
-		for j := 1; j < logits.Columns; j++ {
-			if v := logits.Get(i, j); v > max {
-				max = v
-			}
-		}
-
-		sumExp := 0.0
-		for j := 0; j < logits.Columns; j++ {
-			sumExp += math.Exp(logits.Get(i, j) - max)
-		}
-
-		logSumExp := max + math.Log(sumExp)
-
-		// ---- index-based NLL ----
-		t := int(target.Get(i, 0))
-		loss := -(logits.Get(i, t) - logSumExp)
-
-		out.Set(i, 0, loss)
-	}
-
-	return out
+type crossEntropyLoss struct {
+	probs Mat
 }
 
-func (c crossEntropyLoss) Backward(logits, target Mat) Mat {
+func (c *crossEntropyLoss) Forward(logits, target Mat) Mat {
+	out := NewZeroMat(logits.Rows, 1)
+	c.probs = NewZeroMat(logits.Rows, logits.Columns) // cache here
 
-	probs := NewZeroMat(logits.Rows, logits.Columns)
-
-	// ---- softmax ----
 	for i := 0; i < logits.Rows; i++ {
-
 		max := logits.Get(i, 0)
 		for j := 1; j < logits.Columns; j++ {
 			if v := logits.Get(i, j); v > max {
 				max = v
 			}
 		}
-
 		sumExp := 0.0
 		for j := 0; j < logits.Columns; j++ {
 			v := math.Exp(logits.Get(i, j) - max)
-			probs.Set(i, j, v)
+			c.probs.Set(i, j, v) // store exp(x - max)
 			sumExp += v
 		}
+		logSumExp := max + math.Log(sumExp)
 
+		// normalize to get actual softmax probs
 		for j := 0; j < logits.Columns; j++ {
-			probs.Set(i, j, probs.Get(i, j)/sumExp)
+			c.probs.Set(i, j, c.probs.Get(i, j)/sumExp)
 		}
-	}
-
-	// ---- gradient: (softmax - one_hot) / batch ----
-	out := NewZeroMat(logits.Rows, logits.Columns)
-	scale := 1.0 / float64(logits.Rows)
-
-	for i := 0; i < logits.Rows; i++ {
 
 		t := int(target.Get(i, 0))
+		loss := -(logits.Get(i, t) - logSumExp)
+		out.Set(i, 0, loss)
+	}
+	return out
+}
 
+func (c *crossEntropyLoss) Backward(logits, target Mat) Mat {
+	// reuse c.probs computed in Forward, no recomputation needed
+	out := NewZeroMat(logits.Rows, logits.Columns)
+	scale := 1.0 / float64(logits.Rows)
+	for i := 0; i < logits.Rows; i++ {
+		t := int(target.Get(i, 0))
 		for j := 0; j < logits.Columns; j++ {
-			grad := probs.Get(i, j)
-
+			grad := c.probs.Get(i, j)
 			if j == t {
 				grad -= 1.0
 			}
-
 			out.Set(i, j, scale*grad)
 		}
 	}
-
 	return out
 }
 
@@ -152,6 +93,11 @@ func CrossEntropy() *crossEntropyLoss {
 func BinaryCrossEntropy() *binaryCrossEntropyLoss {
 
 	return &binaryCrossEntropyLoss{}
+}
+
+func MeanSquareError() *meanSquareError {
+
+	return &meanSquareError{}
 }
 
 type binaryCrossEntropyLoss struct{}
