@@ -67,11 +67,11 @@ func (mat Mat) Multiply(other Mat) Mat {
 	a := mat.weights
 	b := other.weights
 
-	for i := 0; i < m; i++ {
+	for i := range m {
 		aRow := i * n
 		cRow := i * p
 
-		for k := 0; k < n; k++ {
+		for k := range n {
 			aik := a[aRow+k]
 			if aik == 0 {
 				continue
@@ -80,7 +80,7 @@ func (mat Mat) Multiply(other Mat) Mat {
 			bRow := k * p
 
 			// local variables reduce repeated slice access
-			for j := 0; j < p; j++ {
+			for j := range p {
 				result[cRow+j] += aik * b[bRow+j]
 			}
 		}
@@ -99,9 +99,9 @@ func (mat Mat) Transpose() Mat {
 	rows, cols := mat.Rows, mat.Columns
 	src := mat.weights
 
-	for i := 0; i < rows; i++ {
+	for i := range rows {
 		rowOffset := i * cols
-		for j := 0; j < cols; j++ {
+		for j := range cols {
 			result[j*rows+i] = src[rowOffset+j]
 		}
 	}
@@ -191,13 +191,6 @@ func NewMat(data [][]float64) Mat {
 	return Mat{weights: flat, Rows: row, Columns: col}
 }
 
-// OneHot converts a single-column label matrix (Row x 1, containing
-// class indices like 0..9) into a one-hot encoded matrix
-// (Row x numClasses). Each row becomes all zeros except a 1 at the
-// column matching that sample's label.
-//
-// Panics if mat is not a single column, or if any label is out of
-// range [0, numClasses).
 func (mat Mat) OneHot(numClasses int) Mat {
 	if mat.Columns != 1 {
 		panic(fmt.Sprintf("OneHot: expected a single-column matrix, got %d columns", mat.Columns))

@@ -9,7 +9,7 @@ func Accuracy(pred, y Mat) float64 {
 	correct := 0
 	n := pred.Rows
 
-	for i := 0; i < n; i++ {
+	for i := range n {
 		p := int(pred.Get(i, 0))
 		t := int(y.Get(i, 0))
 
