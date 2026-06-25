@@ -21,23 +21,22 @@ func xor() {
 		{1},
 		{0},
 	})
-	y := labels.OneHot(2)
 
 	data := nn.Data{
-		X: x, Y: y,
+		X: x, Y: labels,
 	}
 
 	model := nn.NewSequential(
 		nn.NewLinear(2, 4),
-		nn.Sigmoid(),
-		nn.NewLinear(4, 4),
-		nn.Sigmoid(),
-		nn.NewLinear(4, 2),
+		nn.LeakyRelu(0.1),
+		nn.NewLinear(4, 16),
+		nn.LeakyRelu(0.1),
+		nn.NewLinear(16, 2),
 	)
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
 
-	for m := range net.Fit(data, 10240, 32) {
+	for m := range net.Fit(data, 5000, 4) {
 		fmt.Printf("epoch=%d loss=%.4f\r", m.Epoch, m.Loss)
 	}
 	fmt.Println()
@@ -47,8 +46,7 @@ func xor() {
 		row := x.RowAt(i)
 		input := nn.NewRowMat(row)
 
-		logits := net.Infer(input)
-		class := logits.ArgMax().Get(0, 0)
-		fmt.Printf("%v | %v = %v\n", row[0], row[1], class)
+		class := net.Predict(input)
+		fmt.Printf("%v | %v = %v\n", row[0], row[1], class.Get(0, 0))
 	}
 }

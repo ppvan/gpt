@@ -1,6 +1,8 @@
 package nn
 
-import "math"
+import (
+	"math"
+)
 
 type meanSquareError struct{}
 
@@ -60,6 +62,9 @@ func (c *crossEntropyLoss) Forward(logits, target Mat) Mat {
 		loss := -(logits.Get(i, t) - logSumExp)
 		out.Set(i, 0, loss)
 	}
+
+	// fmt.Println(out)
+
 	return out
 }
 

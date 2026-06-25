@@ -18,19 +18,19 @@ func main() {
 	train, val, _ := data.Split(0.80, 0.20, 0)
 
 	model := nn.NewSequential(
-		nn.NewLinear(64, 128),
-		nn.Sigmoid(),
-		nn.NewLinear(128, 64),
-		nn.Sigmoid(),
+		nn.NewLinear(64, 32),
+		nn.LeakyRelu(0.01),
+		nn.NewLinear(32, 64),
+		nn.LeakyRelu(0.01),
 		nn.NewLinear(64, 10),
-		nn.Sigmoid(),
+		nn.LeakyRelu(0.01),
 		nn.NewLinear(10, 10),
 	)
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
 
-	epochs := 50
-	batchSize := 16
+	epochs := 5000
+	batchSize := 32
 
 	for m := range net.Fit(train, epochs, batchSize) {
 		fmt.Printf("epoch=%d loss=%.4f\r", m.Epoch, m.Loss)
