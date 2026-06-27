@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/ppvan/gpt/nn"
+	"github.com/ppvan/gpt/pkg/nn"
 )
 
 func main() {

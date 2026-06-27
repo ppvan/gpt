@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ppvan/gpt/bpe"
+	"github.com/ppvan/gpt/pkg/bpe"
 )
 
 func main() {

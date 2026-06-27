@@ -1,31 +1,28 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: '3'
+version: "3"
 
 vars:
-  GREETING: Hello, world!
   BIN_DIR: bin
-  CLI_BINS: [logic_gates, prime]
+  BINS:
+    - bpe
+    - logic_gates
+    - ndigits
+    # - prime
 
 tasks:
   default:
-    desc: Print a greeting message
     cmds:
-      - echo "{{.GREETING}}"
-    silent: true
+      - task: build
 
   build:
-    desc: Build all binaries
-    deps: [winres:ndigits]
+    desc: Build all executables
     cmds:
-      - for: { var: CLI_BINS }
-        task: build:cli:one
+      - for: { var: BINS }
+        task: build:one
         vars:
-          NAME: '{{.ITEM}}'
-      - task: build:gui:one
-        vars:
-          NAME: ndigits
+          NAME: "{{.ITEM}}"
 
-  build:cli:one:
+  build:one:
     internal: true
     requires:
       vars: [NAME]
@@ -34,61 +31,32 @@ tasks:
     sources:
       - cmd/{{.NAME}}/**/*.go
     generates:
-      - '{{.BIN_DIR}}/{{.NAME}}.exe'
+      - "{{.BIN_DIR}}/{{.NAME}}.exe"
 
-  build:gui:one:
-    internal: true
-    requires:
-      vars: [NAME]
+  build:bpe:
     cmds:
-      - go build -trimpath -ldflags "-s -w -H=windowsgui" -o {{.BIN_DIR}}/{{.NAME}}.exe ./cmd/{{.NAME}}
-    sources:
-      - cmd/{{.NAME}}/**/*.go
-    generates:
-      - '{{.BIN_DIR}}/{{.NAME}}.exe'
+      - task: build:one
+        vars:
+          NAME: bpe
 
   build:logic_gates:
-    desc: Build logic_gates
     cmds:
-      - task: build:cli:one
+      - task: build:one
         vars:
           NAME: logic_gates
 
-  build:prime:
-    desc: Build prime
-    cmds:
-      - task: build:cli:one
-        vars:
-          NAME: prime
-
-  winres:ndigits:
-    desc: Generate Windows resources (icon, manifest, version info) for ndigits
-    dir: cmd/ndigits
-    cmds:
-      - go-winres make --product-version=git-tag
-    sources:
-      - winres/**/*
-    generates:
-      - rsrc_windows_amd64.syso
-      - rsrc_windows_386.syso
-
   build:ndigits:
-    desc: Build ndigits
-    deps: [winres:ndigits]
     cmds:
-      - task: build:gui:one
+      - task: build:one
         vars:
           NAME: ndigits
 
-  run:logic_gates:
-    desc: Run logic_gates
+  run:
+    desc: Run a command
+    requires:
+      vars: [NAME]
     cmds:
-      - go run ./cmd/logic_gates
-
-  run:prime:
-    desc: Run prime
-    cmds:
-      - go run ./cmd/prime
+      - go run ./cmd/{{.NAME}}
 
   tidy:
     desc: Run go mod tidy
@@ -96,17 +64,16 @@ tasks:
       - go mod tidy
 
   fmt:
-    desc: Format all Go source
+    desc: Format Go source
     cmds:
-      - gofmt -l -w .
+      - gofmt -w .
 
   vet:
-    desc: Run go vet across the module
+    desc: Run go vet
     cmds:
       - go vet ./...
 
   clean:
-    desc: Remove built binaries and generated Windows resource files
+    desc: Remove built binaries
     cmds:
       - rm -rf {{.BIN_DIR}}
-      - rm -f cmd/ndigits/rsrc_windows_amd64.syso cmd/ndigits/rsrc_windows_386.syso
