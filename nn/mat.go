@@ -55,6 +55,7 @@ func (mat Mat) Sub(other Mat) Mat {
 func (mat Mat) Hadamard(other Mat) Mat {
 	return mat.Combine(other, func(a, b float64) float64 { return a * b })
 }
+
 func (mat Mat) Multiply(other Mat) Mat {
 	if mat.Columns != other.Rows {
 		panic("incompatible matrices")
