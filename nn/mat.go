@@ -75,11 +75,20 @@ func (mat Mat) Multiply(other Mat) Mat {
 		for k := range n {
 			aik := a[aRow+k]
 			bRow := k * p
+			// slice onces so compiler remove bound checks
 			c := result[cRow : cRow+p]
 			bb := b[bRow : bRow+p]
 
-			// local variables reduce repeated slice access
-			for j := range p {
+			// manual loop unrolling
+			j := 0
+			for ; j+3 < p; j += 4 {
+				c[j+0] += aik * bb[j+0]
+				c[j+1] += aik * bb[j+1]
+				c[j+2] += aik * bb[j+2]
+				c[j+3] += aik * bb[j+3]
+			}
+
+			for ; j < p; j++ {
 				c[j] += aik * bb[j]
 			}
 		}
