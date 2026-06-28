@@ -1,0 +1,533 @@
+Sách HOA-MAI số 13 Cộng-Lực Hanoi xuất-bản — 0$10
+
+Chỉ trông quang cảnh cửa lớp nhất A, học trò các lớp khác cũng đủ biết: hôm nay « các cậu ấy » có Récitation ngay giờ đầu...
+
+Học trò Nam-đinh về khoảng trước năm 1930, ai đã học trường Jules Ferry đều biết tiếng « cụ Toàn » mà ai đã học cụ Toàn đều không quên được những giờ có bài học thuộc lòng trong lớp cụ. Cụ Toàn là giáo viên có tuổi nhất, dạy giỏi nhất trường, nhưng cũng lại là giáo-viên nghiêm-khắc nhất; vì thế mỗi kỳ khai-trường, những học trò lớp nhì được dồn lên lớp nhất, chẳng ai là không thấp-thỏm lo phải vào lớp nhất A, tuy họ biết trước rằng nếu được vào lớp ấy thì chắc chắn sẽ được cả trường kiêng nể như bực đàn anh, vì học trò lớp nhất A năm nào cũng giỏi, cuối năm đi thi mười đỗ chín hay là tám. Học giỏi thì cũng thích thật, đi thi đỗ thì ai đã cắp sách đi học mà lại chả mong, nhưng khổ một nỗi chỉ mới trông thấy cụ Toàn người ta đã tái người đi rồi. Cụ Toàn trông nghiêm-nghị như một ông thày học đời xưa. Cụ đội khăn, mặc áo the, quần trúc-bâu, đi giầy ta, mặt xương xương, mắt xâu và nhìn thật thẳng, cái nhìn lạnh như thép khiến kẻ bị nhìn thấy hơi thở nặng-nề như gần tắc lại, đôi môi mỏng, bộ ria cứng thoai thoải như hai nét mác điểm dưới cái mũi sống nhỏ và thẳng như một nét sổ; cũng may chòm râu lưa thưa buông xuống ngực thêm vào cái bộ mặt kia, cái vẻ phúc-hậu của các cụ già, thành ra cụ không đến nỗi dữ tợn mà chỉ nghiêm trang và đạo-mạo; cái tiếng nói của cụ là thứ tiếng trầm-trầm, giọng nói rất ôn-tồn, điềm-đạm ngay cả trong những khi quở trách, nhưng cả-quyết đến nỗi mỗi lời cụ nói ra thật như đinh đóng cột, đừng ai mong lay chuyển nữa. Tuy vậy, ai học cụ Toàn ít lâu là mến cụ ngay, bởi vì con người ấy nghiêm thì nghiêm thật nhưng không ác; cụ không dong túng một cái lỗi nhỏ nào, nhưng trong khi đánh phạt, cụ điềm tĩnh, không lộ một chút gì nóng giận, đến nỗi người ta hiểu ngay rằng cụ đánh phạt không phải để cho hả giận đâu, nhưng chỉ để sửa lỗi học trò: cụ đánh phạt không phải vì tức-tối nhưng chính là yêu. Người ta có thể trách cái quan-niệm giáo dục sai lầm của cụ, người ta không giận cụ.
+
+Trong các bài học, cụ Toàn chú ý nhất bài học thuộc lòng. Thường thường cụ cắt nghĩa rất kỹ, bắt đọc đi đọc lại nhiều lần, ngắt câu hạ giọng cho thật đúng phép; đến khi phải lên bảng đọc bài, không phải chỉ cốt thuộc lầu lầu đọc trơn tru là đủ, còn phải biết đọc thong-thả dễ dàng, giọng nói ăn với nghĩa câu mới được. Vấp một chữ, ngọng một tiếng, hạ giọng sai một câu, là cứ việc vén áo lên, nhận lấy cái roi mây quất vun vút vào mông đít. Vì thế cứ hôm nào có bài học thuộc lòng, là hôm ấy học trò lớp Sup. A lo ngay từ lúc còn ngoài sân. Họ chẳng còn tưởng đánh bi hoặc đá cầu, mỗi anh tìm một xó ngồi nghiền lại bài cho thật kỹ; rồi anh này gấp sách đọc lại cho anh kia nhìn vào sách mà nghe, họ sửa chữa lẫn cho nhau cho đến lúc thật thuộc mới hơi yên dạ. Trừ một vài anh xưa nay đọc khá, chắc ở tài mình rồi, không cần nhẩm nữa, chơi ác chạy từ bọn này sang bọn khác phá khuấy cho người ta không học được, đùa kiểu ấy anh em sinh đánh nhau là thường.
+
+
+***
+
+
+Người loong-toong cầm một chùm chìa khóa, lần-lượt đi từng lớp một, mở toang các cửa ra. Duyên trông thấy kêu lên:
+
+— Sắp đến giờ rồi, anh em ơi!
+
+Rồi Duyên gấp sách cho vào cập. Các anh khác làm theo. Nhưng cũng còn được dăm phút nữa mới trống, họ hãy lợi dụng mà đùa nghịch đã. Đánh bi hay đá cầu thì sợ không kịp chơi xong ván. Họ đùa bằng cách trêu chọc lẫn nhau mà cười. Đại khái một anh lừa lúc bạn vô ý, « xin bát cơm nguội » vào nhéo chân hay đá cho một cái rồi chạy lẩn đi; anh khác ngấm ngầm hơn « dúm mắm tôm » vạt áo người ta rồi lừa bỏ vào đấy cái lá khô hay mảnh ngói, cũng có anh lấy quả ké bỏ lên đầu bạn rồi di cho vướng chặt vào tóc không sao gỡ ra được nữa... Những anh khác đứng nhìn mà vỗ tay cười và reo. Bỗng có tiếng hỏi:
+
+— Tỳ gờ đâu anh em nhỉ?
+
+— Tỳ gờ chưa đến à?
+
+— Táo gan thật! lại dám đi trễ nữa.
+
+— Không, Tỳ gờ đến rồi đấy. Tỳ gờ ơi!...
+
+Tỳ là anh học trò có lẽ kém nhất trường. Đã thế hắn lại lười Một tháng ba mươi ngày thì đi trễ đến mười lăm; thường thường cứ mọi người xắp hàng xong đâu vào đấy mới thấy hắn từ cổng trường lếch thếch chạy đến cuối hàng, giấu mặt sau lưng các bạn mà hồng hộc thở. Họa huần lắm hắn mới thuộc một bài. Chẳng mấy hôm mà hắn khỏi phải đòn. Vì thế cứ gọi đọc bài là mặt hắn đã tái mét, người run rẩy; hắn đọc ấp a ấp úng, đoạn nào quên thì thay vào bằng những tiếng « gờ... gờ ». Bởi đó mà thành tên. Người hắn dài như một con mèo, mặt đen đủi, chân tay to xương ít thịt, quần áo vá rất nhiều chỗ có thể bảo là bẩn thỉu, cúc cái mất cái còn, cái thì thay bằng ghim băng. Cái đầu hắn khi thì trọc lốc như đầu sư, khi thì lại dậm che kín cả tai lẫn gáy. Những khi thày giáo giảng vệ-sinh, Tỳ thường cúi mặt, không dám nhìn anh em, vì hắn chính là cái thí dụ sống về cách ăn ở bẩn... Thấy Tỳ hiền nên các bạn hay trêu Tỳ...
+
+— Hú ba hồn bẩy vía Tỳ gờ đâu thì ra mà về.
+
+— Tỳ gờ chưa đến thật.
+
+— Chính mắt tôi lúc nãy trông thấy nó mà lại.
+
+— Để tớ đi tìm Tỳ gờ cho.
+
+Duyên lách vào bụi râm bụt, mọc thoai-thoải trên sườn cái thềm trường rất cao. Quả nhiên Tỳ đang hếch mũi lên, mặt ngớ ngẩn quyển sách mở trên đầu gối, mồm lẩm bẩm như một người tu hành ngồi cầu kinh. Hắn phải lẩn kín thế để được yên thân mà học... Duyên thấy Tỳ, đắc trí cười hi-hí:
+
+— Ấy chú! Chú có đi đằng giời!
+
+Tỳ dơ tay ra hiệu và van nài khe khẽ:
+
+— Đừng đùa đấy. Cho tôi nhờ một tý; tôi chưa thuộc. Tôi lạy anh.
+
+Nhưng một anh nữa đã xộc đến. Rồi anh nữa và anh nữa...
+
+— Chú tài lẩn thật!
+
+— Mời chú xuống đây với chúng tôi!
+
+Chúng nắm tay, nắm chân lôi Tỳ xềnh xệch xuống. Tỳ vừa cười vừa kêu rống lên:
+
+— Bỏ ra! Ngã tôi đấy! bỏ ra, đó, rách áo tôi rồi! Các anh đừng đùa.
+
+Các bạn mặc kệ. Họ vỗ tay reo cười khi thấy Tỳ nằm chỏng gọng chân tay lên giời.
+
+— Chúng mày hèn như lợn! Bắt nạt thằng Tỳ thì bắt nạt làm gì?
+
+Những tiếng cười bỗng nhạt. Một vài anh lảng đi nữa. Vì câu xi mắng trên này là của Đang. Đang là anh lớn nhất lớp, nhà giầu, mặc sang trọng, nhưng ai cũng ghét vì thích gây sự đánh nhau với mọi người. Nhiều khi hắn đánh một người, chỉ vì người ấy « cái mặt trông ghét quá muốn bợp tai cho vài cái ». Cả lớp sợ hắn vì có lẽ chẳng còn anh nào là chưa bị hắn cho ăn phật thủ hoặc móng giò. Duy chỉ có Tỳ là chưa bị anh đánh cho trận nào. Không những thế Đang lại hay chửi những anh bắt nạt Tỳ. Có lẽ chính vì Đang cũng học kém ngang ngang Tỳ....
+
+Thấy Tỳ đứng lên vừa dũ áo vừa lẩm bẩm trách anh em Đang bảo:
+
+— Sao mày không trần cho chúng nó một trận?
+
+— Các anh ấy đùa chơi chả lẽ mình lại đâm khùng.
+
+— Đùa! đùa gì mà lại đùa thế? Tao như mày tao đánh hộc máu cái thằng Duyên kia kìa.
+
+Duyên bị chỉ vào tận mặt, bẽ quá, giơ nắm tay ra nửa thật nửa đùa:
+
+— Thách cả anh Đang đấy.
+
+Đang nhẩy lại, nhưng nhanh như cắt, Duyên ngoắt ra chạy. Đang chực đuổi, nhưng trống đánh- Đang hầm hầm bảo:
+
+— Ôn con, giờ hồn không thì tan xương.
+
+Tỳ cười.
+
+
+***
+
+
+Được lệnh, chúng tôi ngồi xuống, tay khoanh lại trên bàn, giá ngứa cũng không dám gãi. Trong lớp im phăng phắc. Thày giáo ngồi xuống ghế, mở sổ nốt ra. Người bị gọi đầu là Duyên. Duyên nhanh nhẹn lên bảng, đứng quay mặt xuống, đọc mạnh dạn, to tát không vấp không sai một chỗ. Thày giáo khen:
+
+— Tốt lắm.
+
+Và cúi xuống biên số điểm vào trong sổ. Duyên thoát nạn, mỉm cười. Hai tai anh đỏ hồng hồng mặt cũng hoi đỏ, đôi mắt thông minh lóng lánh một tia sung-sướng và kiêu-ngạo. Trông thấy anh mà thèm! Chúng tôi nhìn anh phục lắm. Nhất là Tỳ: anh hếch cái mũi lên (dáng quen thuộc của anh) và há hốc cái mồm ra như đứng trước một trò gì lạ lắm Anh thoáng quên hẳn nỗi phấp phỏng của mình, để thích lây cái thích của người bạn nhỏ luôn luôn đứng đầu lớp ấy. Duy có Đang là không lộ một chút thiện cảm gì với Duyên; trái lại đôi mắt anh khoằm khoặm như muốn dọa nạt Duyên; chắc trong bụng anh đang nghĩ:
+
+— Cái thằng oắt này trông bặng nhặng quá, muốn đá cho mấy cái để chừa cái thói làm bộ đi.
+
+Tuy vậy, Đang không nói gì: trong giờ học chỉ mở mồm nói hai ba tiếng đã đủ được ăn roi rồi... Thày giáo cho Duyên về chỗ và gọi Bật. Anh này chẳng kém Duyên là mấy. Rồi đến Thanh. Rồi Hoan, Miễn, Thận, Cung, Đĩnh, Hảo... May mắn làm sao, hôm nay trôi chẩy cả. Thế là được, những anh ngồi dưới cũng đỡ lo: sự kinh nghiệm cho chúng tôi biết rằng khi luôn mươi anh đọc mà không có anh nào phải đòn thì đối với những anh tiếp sau, thầy giáo có hơi dễ dãi. Quả nhiên, gần hết lớp đã đọc xong mà vẫn chưa ai phải đòn. Bây giờ đến lượt Tỳ và Đang! Những anh khác, không còn lo cho mình nữa, thấy nhẹ hẳn người đi, mặt tươi tỉnh môi chực cười. Là vì họ biết trước Tỳ và Đang thì không sao thoát đòn. Nhưng phúc làm sao! Tỳ hôm nay cũng đọc trôi; tuy cũng vấp vài chỗ nhưng lần này là lần đầu anh không phải dùng những tiếng « gờ » nên thày giáo mừng quá, không những không phạt lại còn khen:
+
+— Được đấy!
+
+Thày mỉm cười. Tỳ sướng quá cười, và cả lớp cùng cười theo. Thầy giáo rộng lượng không trách mắng chỉ ra hiệu cho đừng cười ầm ỹ quá. Rồi thày nhìn xuống lớp gọi:
+
+— Sau cùng, phần anh Đang. Tôi mong rằng anh cũng may-mắn như anh Tỳ.
+
+Chúng tôi mỉm cười. Đang hùng-dũng nện gót giầy tây kêu cộp cộp, bước lên. Nhưng anh không đọc, rất bình tĩnh nói:
+
+— Thưa thầy, con xin chịu đòn.
+
+Anh nói câu ấy gọn ghẽ đến nỗi chúng tôi bật cười. (Thói thường vẫn thế: ngồi trong lớp mà đã được cười một lần là cứ muốn cười thêm thật nhiều lần nữa luôn!) Đang không ưa chúng tôi cười anh thế. Anh trợn mắt nhìn chúng tôi; những nụ cười đều tắt ngay. Chỉ có Duyên là không hãm kịp; anh vẫn cười; tiếng cười lẻ loi ấy bị Đang đáp lại bằng một cái nhếch mép vụng thày giáo, nó có nghĩa:
+
+— Rồi mày biết tao.
+
+
+***
+
+
+Ấy thế mà Duyên vẫn không chừa đấy. Lúc ra học, vừa lọt khỏi cổng trường, là anh đã nhảy nhót tíu tít, cười cười nói nói nhắc lại truyện Đang với mấy người bạn cùng đường với anh, học các lớp khác. Nhưng vừa nói anh vẫn vừa phải lấm lét nhìn xem Đang có đứng đâu đấy không; anh tin vào đôi chân nhanh nhẹn của anh để chạy thoát người bạn hung tợn ấy. Duyên không thấy Đang đâu cả; có lẽ Đang về xa rồi. Anh có thể kể xấu Đang cho sướng miệng, không lo gì. Cái giọng chế nhạo, những bộ-điệu ngộ nghĩnh của anh làm bao nhiêu bạn cười. Mũi anh đang phổng lên to lắm! Thì bỗng anh thét lên một tiếng lớn, như con ngóe bị con rắn đớp: Đang lon lủi ở đằng sau, lừa lúc Duyên cao hứng nhất để nắm chặt lấy cái cổ áo và dúi đầu Duyên xuống.
+
+— Mày có thoát đằng giời, em ạ!
+
+Các bạn Duyên giật nảy mình. Họ đứng giãn cả ra, lẳng lặng nhìn, không ai dám vào can sất. Đang tát cho Duyên một cái:
+
+— Mày nói gì tao, hở?
+
+Duyên đã gần mếu máo, nước mắt chảy vòng quanh; anh hăng hái chối:
+
+— Không, tôi có dám nói gì anh đâu. Tôi lạy anh.
+
+Đang tát cho cái nữa:
+
+— Cái mồm mày lem lém! Ông bảo thật cho mà biết: trêu ghẹo thằng Tỳ thì được chứ động đến ông mày thì được méo mặt ngay.
+
+— Tôi xin anh, từ nay tôi xin chừa. Anh tha tôi.
+
+— Không tha được. Cái thói mày vẫn vậy; tao mà buông ra một cái là mày chửi tao rồi chạy ngay.
+
+— Không, tôi không dám thế.
+
+— Này không này!
+
+Hai ba cái thụi chắc nịch thúc vào lưng Duyên. Duyên đau quá nên sinh cáu:
+
+— Ái chà! mày đánh ông đau quá! có buông ngay không có ông chửi cho bây giờ...
+
+Thế là Đang nghiến răng vào mà đấm, đạp Duyên túi bụi. Duyên kêu như lợn bị chọc tiết. Chúng tôi tối tăm cả mắt, muốn can quá mà chẳng ai dám vào. Giữa lúc ấy thì Tỳ chạy lại. Đằng sau Tỳ là một bọn nữa vừa chạy vừa reo:
+
+— Đánh nhau! a ha! đánh nhau, các anh ơi!
+
+Duyên hăng máu, đã dằng ra được, vơ lấy một hòn đá bên đường ném Đang. Đang tránh, và lại nhẩy bổ vào người Duyên. Duyên vừa khóc, vừa chửi, vừa giằng co.
+
+Tỳ hếch mũi lên nhìn một chút, rồi đưa sách cho một người bạn, chạy vào nắm lấy cánh tay Đang:
+
+— Thôi, anh Đang. Anh ấy bé...
+
+Đang gạt phắt tay Tỳ ra, mắng:
+
+— Còn mày nữa! ai chả biết hôm nay thuộc bài!
+
+— Không phải thế...
+
+Tỳ lại kéo Đang ra. Đang cáu tiết:
+
+— Cút ngay! đồ hèn như lợn, chỉ quen để người ta bắt nạt.
+
+Tỳ đã quả quyết hơn:
+
+— Ai bắt nạt được tôi!
+
+Cái ngực Tỳ ưỡn ra, kiêu-hãnh lắm. Chúng tôi đều phải lạ. Chính Đang cũng phải ngừng lại, nhìn Tỳ như nhìn một thằng đột nhiên hóa dại. Anh cười gằn, hỏi:
+
+— Mày định chơi nhau với tao thật à? Đây có giỏi thì đánh đi.
+
+— Anh làm gì tôi mà tôi đánh?
+
+— Thế thì mặc tao với thằng Duyên, việc gì đến mày?
+
+Duyên được dịp có thì giờ thở, the thé:
+
+— Mặc là mặc thế nào? Đồ khốn-nạn! Mặc để mày bắt nạt tao ấy hở?
+
+Đang quay ra chực nhẩy bổ lại Duyên. Nhưng nhanh nhẹn, Tỳ đã bước một bước, cản đường Đang. Hai cái mũi gần sát nhau. Đang đưa cánh tay lên ngáng ngực Tỳ:
+
+— Mày nhất định chơi nhau chứ?
+
+— Anh không có quyền đánh Duyên.
+
+— Nó là anh mày hay sao mà mày bênh.
+
+— Nó bé. Anh đánh nó là bát nạt. Tôi khỏe thì phải bênh.
+
+Đang nhếch môi lên, chế nhạo:
+
+— À ra thế. Mày khỏe! Đã vậy, tao đánh ngay mày xem mày khỏe đến đâu.
+
+Tức khắc, một cái quai hàm tạt vào bên trên cổ Tỳ. Nhưng nhanh nhẹn, Tỳ cúi đầu tránh được. Và dẻo-dang như con vượn, Tỳ ngáng một chân về phía trái của Đang, vươn người về phía phải, thúc một khuỷu tay vào nách Đang, gạt một cái mạnh khiến Đang siêu người và nằm soài ngay xuống đường. Tỳ thắng nhanh chóng quá, chúng tôi ngạc-nhiên quá, đến nỗi không ai tưởng reo hò như mọi lần thấy một người đánh nhau mà bị hại đến phải ăn bụi đường. Cũng nhanh-nhẹn như khi đánh ngã Đang, Tỳ cúi xuống đỡ Đang đứng dậy, rồi vừa dũ áo cho Đang vừa bảo:
+
+— Thôi đấy nhé. Chúng mình hòa.
+
+Tưởng Tỳ nhạo Đang, chúng tôi bật cười. Đang thì mặt đỏ như gấc chín, cúi gầm xuống mồm lẩm bẩm nói gì, không ra tiếng. Trông anh đã mất cả cái bộ điệu vênh-váo của kẻ « bất chấp bất cứ thằng nào trong trường Jules Ferry này ». Chúng tôi ngấm-ngầm hả lắm. Chúng tôi lại phục cái lối chơi đàn anh của Tỳ: Không thèm đánh người đã ngã và phủi bụi áo cho kẻ đã đánh nhau với mình. Nhưng đột nhiên, Đang nhè lúc Tỳ vô ý, tát cho Tỳ một cái dúi người đi, đạp thêm cái nữa, rồi cắm đầu chạy biệt. Duyên tức-tối chửi toáng lên. Còn Tỳ khi gượng đứng lại được rồi, đành hếch mũi nhìn Đang; má anh còn in rõ vết năm đầu ngón tay, mồm thì há-hốc. Cái vẻ ngờ-nghệch thường ngày của anh trở lại. Chúng tôi bật cười. Tuy vậy chúng tôi đã bắt đầu hết dám khinh cái thân mèo ướt và những cái tay long khong của Tỳ gờ. Trước mắt chúng tôi, anh học-trò lù đù ấy đã biến thành một vị anh-hùng nho-nhỏ.
+
+
+***
+
+
+Chỉ mấy hôm sau, là chúng tôi lại được dịp ngạc-nhiên thêm lần nữa về Tỳ. Vị anh-hùng của chúng tôi thật ra lại là một tay gian-hùng. Ai ngờ đâu!
+
+Chiều hôm ấy, chúng tôi có bài tập đọc. Ngay buổi sáng, thầy giáo đã bảo Đang:
+
+— Tôi hẹn cho anh hẹn này là hẹn cuối cùng: Chiều nay anh phải làm thế nào cho có sách, nếu không thì đừng trách.
+
+Nguyên trước kia, Đang cũng có sách hẳn hoi. Nhà giầu như nhà anh, đừng nói một quyển, đến mười quyển anh mua cũng được. Nhưng một hôm anh bán sách đi để ăn quà, rồi đến giờ tập đọc lên thưa thày rằng bị anh nào đánh cắp mất. Mưu gian bại lộ, Đang phải đòn một trận nên thân. Thày giáo bắt anh từ hôm ấy mà đi phải nhịn ăn quà cho đủ tiền mua sách khác. Bắt Đang nhịn ăn quà!... Thà rằng cứ để mỗi lần có tập đọc, đánh anh bốn roi đòn còn hơn. Đang cứ ăn, rồi đến lúc, lại lên thưa thày: « Con chưa có » và giơ lưng ra dựa đòn. Dùng roi vọt đối với anh thật là vô-hiệu. Vì thế thày phải hẹn cái hẹn cuối cùng nói trên. Chiều nay Đang còn không có sách, rất có thể rằng Đang bị đuổi...
+
+— Anh nghe rõ rồi đấy chứ?
+
+Đang cúi mắt, đáp khe khẽ:
+
+— Thưa thầy, vâng.
+
+— Giờ tập đọc. Vừa vào đến lớp, thầy đã hỏi:
+
+— Đang có mặt đấy chứ?
+
+— Thưa thầy, con đây
+
+— Đem sách tập đọc lên tôi xem.
+
+Đang hớn hở rút cập ra để lấy. Trông vẻ mặt anh, chúng tôi đã chắc anh có rồi. Nhưng cái mặt anh bỗng sa sầm, rồi nhớn nhác. Anh cúi nhìn xuống ngăn bàn, xuống gầm bàn, rồi quay sang bên phải, lộn sang bên trái, duôi cổ nhìn lên bàn trên, mồm lẩm bẩm chửi khe khẽ, đầu gối khuỷu tay thích trộm anh bên phải, anh bên trái, có lúc lại dụi mắt, gãi đầu như ngứa điên cả người.
+
+Vẫn lại cái trò cũ rở ra! Thầy giáo hơi nhếch môi chế nhạo, mặt lạnh lùng, mắt nhìn tròng trọc. Đợi cho Đang lục lọi, ngoáy ngoang chán rồi, thầy mới hỏi:
+
+— Cố nhiên lại mất cắp rồi, phải không?
+
+Đang gần như hục hặc:
+
+— Vâng, thật có anh nào đểu ăn cắp sách... thầy cứ cho phép con đi khám. Quyển sách con vừa mua xong.
+
+Thầy càng có vẻ chế nhạo thêm:
+
+— Có anh nào cầm lẫn quyển sách mới mua của anh ấy không?
+
+Im phăng phắc. Rồi Duyên đứng lên:
+
+— Thưa thầy, anh ấy nói thế thì ra trong lớp có người ăn cắp. Thầy cứ cho phép anh ấy đi khám, kẻo mang tiếng cả.
+
+Đang hùng hổ:
+
+— Vâng, thầy cứ cho con đi khám.
+
+Thầy ra lệnh cho ai nấy đứng cả lên, tay khoanh lại (như thế ai trót lấy cũng không thể ném đi hay bỏ vào ngăn của người bên cạnh) rồi cho Đang lần lượt đi lục cặp, xem ngăn bàn từng anh. Cuộc khám xét mất đến hai mươi phút, bởi vì Đang làm kỹ lắm. Anh dừng lại rất lâu ở chỗ Duyên và Tỳ; cái ấy dễ hiểu: đó là hai người ghét anh. Anh lại đòi nắn cả túi, cả sau lưng người ta, sợ có kẻ nhét vào trong áo nhất là lúc khám Tỳ, anh làm Tỳ đến phải cáu lên; hai người lẩm bẩm nói với nhau những gì không ai nghe rõ, nhưng cũng đoán ra rằng đó không phải là những lời nhã nhặn, vì cả Đang Tỳ cùng có vẻ không bằng lòng. Kết quả: chẳng có ai là kẻ cắp...
+
+Thầy giáo bình tĩnh hỏi:
+
+— Xong rồi chứ?
+
+— Thưa thầy xong, nhưng...
+
+— Có thấy không?
+
+— Thưa thầy không, nhưng chắc anh nào lấy đã...
+
+Thầy ra hiệu cho Đang ngừng lại...
+
+— Tôi biết. Anh đã mất cắp một lần như thế rồi.
+
+Đang cúi mặt, nhíu đôi mày rậm ra vẻ ức. Thầy không để ý, dằn từng tiếng:
+
+— Những một cái lỗi trái lời tôi, đã đủ để anh phải đuổi; huống chi anh lại gian giối, vu vạ. Anh cắp sách đi ra ngay bây giờ.
+
+Đang sợ hãi:
+
+— Thưa thầy...
+
+Thầy trợn mắt lên, cả quyết:
+
+— Đừng nói nhiều, vô ích. Đi ra!
+
+Đang đột nhiên, nức nở:
+
+— Thưa thầy.. thật... oan con quá.
+
+Thầy vẫn khăng khăng:
+
+— Tôi bảo anh đi ra.
+
+Đang vừa khóc, vừa vùng vằng, đi ra, Bỗng, Tỳ run rẩy, đứng lên:
+
+Thưa thầy..
+
+Đang quay ngay lại, nói gần như gào lên:
+
+— Thưa thầy, đấy, anh Tỳ anh ấy thù con...
+
+Cả thầy, cả chúng tôi đều sửng sốt. Nhất là Duyên. Duyên đứng phắt lên, cố bênh kẻ đã bênh mình:
+
+— Thưa thầy, không có lý nào...
+
+Nhưng thầy ra hiệu cho Duyên ngồi xuống, bảo
+
+— Cứ để cho anh Tỳ nói.
+
+Đang quả-quyết,:
+
+— Chính anh Tỳ...
+
+Thày ngăn anh lại:
+
+— Tôi không hỏi anh. Tôi hỏi anh Tỳ. Anh nên hiểu rằng làm cho Đang phải đuổi oan thì lương-tâm anh sẽ cắn rứt anh suốt đời. Nếu quả anh trót dại thì cứ nhận. Anh hãy nhìn thẳng vào mắt tôi mà trả lời: có phải anh thù mà lấy quyển sách của Đang không? Anh hãy nhìn thẳng vào mặt tôi...
+
+Nhưng Tỳ vẫn cúi gầm mặt xuống; anh khẽ đáp:
+
+— Thưa thày, quả là...
+
+Thày giơ một tay lên:
+
+— Thế là đủ. Cho Đang về chỗ. Tỳ lên đây. Khi người ta đã ăn cắp thì đừng tìm một lý lẽ gì để chống-chế cho mình nữa.
+
+Duyên hậm-hực, lại đứng lên. Nhưng chúng tôi « suỵt » cho anh ngồi xuống:
+
+— Thôi đi! Thôi đi! Đừng cãi cố, ai chả biết...
+
+Tỳ lên chịu mười roi đòn, trước con mắt khinh-bỉ của ngót năm chục người anh em. Con người ấy cũng biết trả thù một cách hèn-mạt đấy! Ai dám ngờ?...
+
+
+***
+
+
+Từ đây chúng tôi tránh Tỳ cũng như sợ Đang. Còn Tỳ và Đang thì vẫn thay nhau đội sổ, vẫn hay đi trễ, không thuộc bài, năng phải đòn. Vì thế, tuy đã mấy phen đánh đấm, làm hại nhau như vậy mà họ lại thành thân-thiết với nhau! Kể thì cũng buồn cười, nhưng chẳng lạ gì: nếu họ không đánh bạn với nhau thì cũng không còn biết đánh bạn cùng ai được. Vả lại một thằng lười với một thằng lười, một thằng xấu với một thằng xấu, thân với nhau là phải: như thế, không anh nào sợ anh nào cười hoặc khinh; cả hai cùng ngang nhau. Nhiều lúc trông cái áo sa trơn hoặc cái áo đoạn đen nhẫy của Đang đi bên cái áo thâm bốn mùa rách vá và không thay đổi của Tỳ, chúng tôi phải buồn cười. Nhưng chỉ cười vụng mà thôi, vì thật ra anh nào cũng sợ. Ít ra, Tỳ và Đang cũng được một chỗ đó để mà kiêu: họ là hai người khỏe và ngổ, cả trường không ai dám trêu. Cái gương của Duyên còn trờ ra đó.
+
+Duyên bị Đang sửa trận ấy đến bây giờ hãy còn kinh. Tuy anh chẳng thú thật ra mồm, nhưng ai chả biết. Bây giờ anh không còn hay cười cợt, chế riễu như trước nữa. Mặt lúc nào cũng tiu-nghỉu như chưa quên cái nhục bị Đang đập như đập một con mèo. Người ta bao giờ cũng thế: kém vui-vẻ là kém hoạt-động ngay. Duyên học hình như kém chăm đi, bài kém thuộc, đọc kém hay. Số điểm các bài thi của anh cứ thụt dần. Trong bảng xếp thứ tự, anh đang nhất phải xuống thứ ba, rồi từ thứ ba xuống thứ bẩy, tháng này chắc còn xuống nữa. Thày giáo bắt đầu phàn nàn. Đã một đôi khi anh phải đòn. Có lẽ vì thế mà anh xấu hổ cứ trốn tránh anh em, chẳng đùa nghịch với ai. Trước anh còn hay trò chuyện với Tỳ, nhưng từ khi Tỳ thành bạn của Đang, anh thành trơ-trọi. Trông anh lủi-thủi mà người ta thương! Nhưng giá có gợi chuyện với anh thì anh chỉ nói qua loa, hình như không cần ai an-ủi cả. Chúng tôi nghĩ bụng: chẳng qua anh hay trạnh lòng; trước anh chế riễu người ta lắm bây giờ cứ tưởng người ta cũng như anh, đến với anh chỉ để mà chế riễu. Thôi thì đành mặc anh!
+
+
+***
+
+
+Một hôm vừa vào đến lớp, chưa kịp rở sổ, thày đã ra lệnh cho Tỳ đứng lên. Chúng tôi hết thẩy đều nhìn anh. Anh lại còn cho chúng tôi một cái ngạc-nhiên gì nữa đây? Tỳ cúi đầu, bối-rối hiện ra nét mặt. Chúng tôi đoán anh đã phạm một lỗi gì rất nặng, vì thấy thày trù-trừ khá lâu, mắt đăm đăm như nghĩ ngợi hoặc chưa nỡ nói ra; ấy là một giáng điệu mà chúng tôi chưa từng thấy ở thầy giáo chúng tôi bao giờ...
+
+Nét mặt thầy đột-nhiên dịu-lại, và thày hỏi:
+
+— Các anh có biết vì sao rất ít khi Tỳ thuộc bài không?
+
+Còn vì sao nữa? Chúng tôi đều hơi mỉm cười. Thày cũng mỉm cười, nói tiếp:
+
+— Các anh đều cho là tại anh Tỳ lười, có phải không? Tôi cũng vẫn tưởng thế. Nhưng mà không! anh ấy không thuộc chỉ vì anh ấy không có thì giờ.
+
+Đến đây thì chúng tôi không mỉm cười nữa; chúng tôi cười thật to: chưa bao giờ thầy giáo chúng tôi riễu cợt một cách có duyên đến thế... Nhưng thầy bỗng đứng lên, ra hiệu cho chúng tôi đừng cười nữa:
+
+— Tôi có nói đùa đâu? Tôi nói thật. Anh Tỳ không được học. Anh là trẻ bồ côi, cả bố lẫn mẹ đều chết cả. Anh ở với bác. Bác anh ban ngày cho anh đi học, nhưng tối về bắt đi bán lạc rang hay mía, bưởi, bánh, kẹo đến mười giờ đêm, có khi mười một hay mười hai hai giờ không biết chừng.
+
+Rồi thầy kể lại cuộc gặp gỡ tình cờ, nó đã khiến thầy tìm ra cái bí mật của anh Tỳ bồ côi...
+
+— Tối hôm qua, thầy chơi ở nhà một người quen đến tận khuya mới ra về. Đường phố đã vắng. Chỉ còn một vài cái xe thưa thớt đứng đón khách ở một hiệu ăn ở đấy ra. Và quá mấy bước nữa là một đoàn xe gác ở bên đường đợi tan rạp hát. Cũng có dăm ba đứa trẻ bán hàng đánh rời với nhau ở ngay cửa rạp. Đi quá rạp hát, thầy bỗng để ý đến một tiếng học trò học bài « người gieo mạ » thầy vừa cắt nghĩa hôm nọ. Có lẽ là học trò thật không biết chừng. Anh nào mà còn học khuya thế? Thầy nhìn hai bên đường xem có nhà nào còn ánh sáng đèn không. Nhưng kẻ học không ngồi ở trong nhà. Hắn kia! Hắn đang ngồi củ rủ bên một cái thúng con, cạnh cột đèn, quyển vở mở ra đặt trên cái bệ xi-măng làm chân cột. Hắn quay lưng lại, nên thầy không trông thấy mặt. Thầy tò mò lại gần nhìn xem. Thấy tiếng động, hắn quay lại, mồm chào khách:
+
+— Cụ mua lạc? Cụ mua dùm cháu xu lạc mặn.
+
+Nhưng hắn bỗng cuống quít đứng lên, chắp tay lại, cúi đầu, mồm ấp úng:
+
+— Lậy thầy ạ...
+
+Thầy ngạc nhiên nhìn hắn:
+
+— À, anh Tỳ, anh làm gì đấy?
+
+— Thưa thầy...
+
+Tỳ cúi đầu, không biết đáp sao. Nhưng thầy đã hiểu. Thầy cảm động lắm. Thầy đặt một tay lên vai học trò mà bảo:
+
+— Anh đi bán hàng? Tốt lắm! đừng tưởng thế là xấu đâu.
+
+Rồi thầy hỏi truyện Tỳ. Tỳ không dấu diếm nữa. Bấy giờ thầy mới biết Tỳ học kém chỉ vì không được học.
+
+
+***
+
+
+Hết thẩy chúng tôi đều cảm động. Chúng tôi, nhìn Tỳ bằng những con mắt khác hẳn trước kia. Việc anh ăn cắp sách chúng tôi đã quên rồi. Trước mắt chúng tôi; Tỳ chỉ là một anh bạn khổ sở đáng cho người ta thương hại... Không những thế, Tỳ lại đáng cho chúng tôi phục nữa Vì thầy nói tiếp như thế này:
+
+— Bao nhiêu lần phải đòn oan, Tỳ chỉ cắn răng vào mà chịu. Tỳ không than thở, cũng không muốn nói cái duyên cớ ra để tránh đòn. Không phải Tỳ sợ các anh biết Tỳ phải đi bán lạc rang thì xấu hổ đâu. Cái nghèo không xấu. Làm một việc lương thiện để kiếm ăn không những không xấu mà lại đáng khen. Tỳ cũng hiểu thế. Nhưng Tỳ bảo với tôi rằng: anh sợ nói ra thì bác anh mang tiếng; anh sợ chúng ta hiểu nhầm rằng bác anh cay nghiệt với anh; thật ra thì bác anh nghèo quá nên mới phải bắt anh đi bán hàng để thêm thắt vào. Các anh có biết lời nói ấy tỏ rằng Tỳ can đảm mà quảng đại lắm không? Anh không oán hận ai, anh vui lòng chịu khổ lại biết tìm đến cái căn do nó bắt buộc người phải ác với mình để không giận người. Thế tức là rộng lượng.
+
+Thầy ngừng lại một chút, nhìn Tỳ bằng những con mắt — lần đầu tiên chúng tôi thấy — dịu dàng. Rồi thầy lại nhìn khắp chúng tôi, đang chú ý nghe mê mải và mỉm cười bảo chúng tôi:
+
+— Tỳ đã rộng lượng khi xét người khác, thì ta cũng nên rộng lượng khi xét những việc Tỳ làm. Tỳ đã lấy cắp quyển sách của Đang, đó thật là một việc xấu-xa. Dù thế nào nữa, ta cũng không nên ăn cắp. Tỳ phạm cái lỗi ấy, tôi rất tiếc. Nhưng ta cũng nên nghĩ rằng bởi Tỳ quá nghèo nên mới sinh liều. Vả lại sau việc ấy, Tỳ chưa tái phạm lần nào nữa. Các anh cũng đồng ý với tôi, tha-thứ cho Tỳ chứ?...
+
+Tất cả chúng tôi đều trả lời « vâng ». Nhưng người ta bỗng thấy Đang đứng giậy, mặt tươi cười...
+
+— Thưa thày, con xin nói.
+
+Chúng tôi quay mặt xuống, đợi xem Đang nói gì. Đang nói to tát như muốn diễn-thuyết trước mặt anh em:
+
+— Con chắc lúc này thầy sẵn lòng tha-thứ cho con, con mới dám nói thật: thật ra, thì anh Tỳ không ăn cắp sách của con... (chúng tôi cười, tỏ vẻ không tin, nhưng anh nói át đi). Quả vậy, các anh cứ để cho tôi nói. Anh Tỳ không ăn cắp sách của con, chính con đã van lậy anh ấy nhờ anh ấy nhận dùm con kẻo con phải đuổi. Anh ấy do dự mãi, nhưng lúc thấy con phải đi ra mới liều nhận vậy.
+
+Thầy bỗng nghiêm nét mặt:
+
+— À, thế đấy. Nhưng hai anh có biết rằng: thế tức là hai anh đồng mưu với nhau để lừa giối thầy và bạn đấy không?
+
+Đang sầm ngay mặt lại. Nhưng Tỳ đáp:
+
+— Thưa thày, chúng con chỉ giối thày có một nửa thôi. Bởi vì chính thật thì anh Đang phải đuổi oan; con có trông thấy anh ấy mua sách tập đọc trước khi đến trường.
+
+Thày tưởng Tỳ chống-chế, nên cau mặt, hỏi:
+
+— Ồ! Nếu vậy nghĩa là có người lấy cắp. Người ấy không phải là anh. Vậy thì là ai?
+
+Tỳ cúi mặt đáp khẽ:
+
+— Thưa thày, con không biết.
+
+Thầy Nhìn bao quát cả chúng tôi:
+
+— Phải, kẻ cắp là ai trong lớp này?
+
+Cái phút mới nặng nề! Chúng tôi thấy thày đang vui-vẻ trở nên nghiêm-khắc đều ngồi im phăng-phắc, không ai động-đậy. Cái nhìn thấu xuốt của thầy lần lượt đặt lên từng người một. Nó ngừng lại chỗ Duyên. Bấy giờ chúng tôi mới để ý đến đôi tai Duyên đỏ ửng. Bỗng như một kẻ hoảng hốt, Duyên đứng dậy như một cái lò xo thôi bị ép bật lên, và vừa mở mồm nói được hai chữ « thưa thầy » đã lại ngồi phịch xuống ghế, gục đầu vào cánh tay nức nở... Thầy dịu giọng hơn, ôn tồn bảo:
+
+— Duyên, đứng lên. Làm sao vậy?
+
+Duyên vừa nức nở vừa cố nói:
+
+— Thưa... thầy, kẻ cắp... chính... là con.
+
+Đang quên khuấy rằng mình đang ở trước mặt thầy, vỗ vào đùi nhẩy cẫng lên:
+
+— Ừ, có thế chứ! ông biết mà!
+
+May cho anh, cả thầy cũng không giữ nổi cho khỏi cười. Chúng tôi cười ồn lên...
+
+
+***
+
+
+Duyên khóc đã đủ rồi. Bây giờ anh thú tội:
+
+— Thưa thầy, con bị anh Đang đánh đau quá nên sinh giận. Vả lại con cũng muốn báo thù cho anh Tỳ nữa. Anh Đang đánh trộm anh Tỳ rồi chạy, thật là hèn. Con tưởng anh ấy đã hèn thì con có hèn cũng không ân-hận. Nhân thấy anh Đang để cái cặp ở gốc bàng rồi chạy ra phía sau trường, con lừa lúc không ai để ý, rút lấy quyển sách tập đọc ném sang trại lính ở ngay cạnh trường. Con cũng tưởng làm thế để anh Đang phải đòn thôi. Không ngờ anh ấy phải đuổi. Con đã muốn thú nhưng lại sợ. Con nghĩ bụng: thôi cái mẽ anh Đang có học cũng chẳng ích gì, thà ở nhà còn hơn! Không ngờ anh Tỳ lại đứng lên nhận tội để cứu Đang. Con bỗng thấy con hèn quá, nên cố cãi cho anh Tỳ; có lúc con đã chực nhận, nhưng thấy các anh ấy « suỵt », con bối rối, rồi sợ, rồi lại ngồi xuống và im đi. Nhưng về sau, luôn mấy tháng giời, cho đến tận nay, con hối hận lắm, đến nỗi cứ luẩn-quẩn nghĩ ngợi vào đấy mà quên cả học. Con ngẩn-ngơ cả người. Óc con như mụ hẳn đi. Lúc nào con cũng nhớ đến mười roi đòn anh Tỳ can đảm chịu để gỡ tội cho kẻ thù của anh. Còn con!... Đến nỗi con ăn mất ngon, ngủ không yên giấc, học hành ngày một giật lùi. Con khổ sở lắm, khổ sở gấp nghìn lần cứ thú tội mà chịu mười roi, hai mươi roi... cho đến một trăm roi vẫn còn nhẹ hơn.
+
+Thầy giáo gật đầu bảo:
+
+— Chính thế. Không có hình phạt nào làm người ta đau đớn cho bằng hình của lương tâm mình. Nhưng sao anh không thú tội?
+
+— Thưa thầy, vì con nghĩ bây giờ có thú thì cũng muộn quá rồi. Dẫu sao, anh Tỳ cũng đã phải đòn. Vả lại...
+
+— Chưa thể coi là muộn được. Anh vẫn cần thú tội để rửa cái tiếng oan cho anh Tỳ.
+
+— Con cũng biết thế. Nhưng con lại còn muốn làm một việc gì để chuộc lỗi con trong một vài phần. Con nhịn ăn quà sáng, nhịn đi xem chớp bóng, lấy tiền bỏ ống. Tuy con không biết anh Tỳ đến nỗi phải đi bán lạc, nhưng con cũng biết anh thường thiếu sách và bút giấy. Con định khi được món tiền kha khá sẽ biếu anh Tỳ và thú tội ra luôn thể.
+
+Thầy giáo kêu lên (chưa hôm nào thầy nhiều lúc bồng bột như ngày hôm nay):
+
+— Anh không nói điều ấy, tôi quên mất. Cái ý chính của tôi lúc kể truyện anh Tỳ là để bàn với các anh, kẻ ít người nhiều giúp đỡ cho anh ấy, chứ có phải để tra cái việc mất sách đâu. Không ngờ việc nọ làm nẩy việc kia. Thôi, cái việc mất sách ta coi là tạm xong rồi. Anh Duyên đã biết hối hận, lại đã biết nhịn ăn quà để chuộc lỗi thì ta cũng nên tha. Bây giờ ta trở về cái việc chính: giúp đỡ anh Tỳ chút ít.
+
+Tỳ phản đối:
+
+— Thưa thầy, con không dám nhận.
+
+Duyên quay lại, vẻ mặt vẫn còn ân-hận, bảo:
+
+— Nếu anh không nhận món tiền của tôi biếu anh tức là anh còn giận tôi.
+
+— Tôi có giận anh đâu?
+
+— Nhưng...
+
+Thầy vội gạt đi:
+
+— Tôi hiểu rồi: anh Tỳ không muốn nhận tiền của các anh cho. Nhưng tôi có bảo các anh góp tiền để cho anh ấy đâu. Tôi đứng địa vị một ông giáo đi quyên tiền để đặt phần thưởng. Mỗi anh sẽ quyên cho tôi ít nhiều thế nào tùy sức và tuỳ ý. Tiền ấy tôi sẽ đặt một phần thưởng gọi là « phần thưởng người bạn tốt ». Ai được bầu là người bạn tốt nhất thì được lĩnh, có cứ gì anh Tỳ đâu. Anh đã chắc được hay sao mà chối?
+
+Thầy nhìn Tỳ, cười nửa chế nhạo, nửa âu yếm. Tỳ bẽn lẽn. Chúng tôi cười... đùa anh:
+
+— Ê-ê! Xấu, Tỳ nhận vơ.
+
+Thày cao giọng bảo:
+
+— Im tất cả. Bây giờ tôi quyền tiền. Duyên cúng bao nhiêu?
+
+— Con xin đưa hai đồng.
+
+Thầy cầm bút chì biên vào một mảnh giấy...
+
+— Duyên, hai đồng. Còn các anh khác?
+
+— Con năm hào.
+
+— Con ba hào.
+
+— Con một đồng.
+
+— Con hào rưỡi thôi ạ...
+
+Thầy biên xong, hỏi:
+
+— Còn ai nữa không nhỉ?
+
+Đang nói hấp-tấp:
+
+— Thưa thầy còn Đang ạ. Đang: mười đồng.
+
+Thầy đùa:
+
+— Ái chà! anh này giầu tệ!... À, còn Tỳ nữa, tí nữa quên. Tỳ bao nhiêu?
+
+Tỳ cúi đầu cười, ngượng-nghịu.
+
+— Ba gói lạc nhé?
+
+Hết thẩy chúng tôi đều cười.
+
+
+***
+
+
+Ngay buổi tối hôm ấy, bà mẹ Đang và Đang đến thăm ông bác Tỳ trong cái nhà lá lúp-xúp của ông ở mãi ngoài tỉnh. chỗ gần chùa Năng-Tĩnh. Đang bảo Tỳ rằng:
+
+— Tôi đã thưa chuyện với mợ tôi rồi. Bây giờ mợ tôi đến xin phép bác anh cho anh về ở nhà tôi, học với tôi cho vui. Tôi có một mình buồn lắm, chỉ lêu-lổng chả học hành gì. Mà anh cứ còn phải đi bán hàng thế thì cũng không học được. Nếu chúng ta ở một chỗ với nhau, có anh có tôi, ta chịu khó thúc giục nhau thì cả hai cùng học được. Mợ tôi đang muốn tôi có bạn, được anh ngoan-ngoãn thế, chắc mợ tôi mừng lắm.
+
+Bà mẹ Đang cũng bảo ông bác Tỳ:
+
+— Đấy. ý cháu thì nó ước ao như thế đấy. Tôi cũng chiều ý nó. Chỉ còn tùy ông. Tôi tưởng ông cũng chẳng nên câu-nệ...
+
+Ông bác Tỳ mừng lắm. Thật ra thì Tỳ đi bán hàng may lắm chỉ đủ ăn. Lợi-lộc gì đâu! Chẳng qua Tỳ là cháu, thì ông phải cố nuôi. Bây giờ có người đỡ lấy, Tỳ lại được có thì giờ để học, thì còn gì hơn. Ông soa hai tay vào nhau lễ phép thưa:
+
+— Bà với cậu có lòng thương cháu thế, tôi xin vui lòng.
+
+Đang hớn-hở cảm ơn ông:
+
+— Thế chính là ông thương cháu đấy; có anh Tỳ về với cháu thì may ra cháu học đòi bắt chước...
+
+— Cậu cứ dạy quá lời.
+
+— Không ạ, cháu thưa ông thật đấy.
+
+...Chỉ ít lâu sau, đôi bạn ấy đã thân-thiết quá anh em ruột. Người ta thấy Tỳ sạch-sẽ hơn, lành-lặn hơn, và Đang hiền-lành, tử-tế, chứ không hung-tợn như trước nữa. Cả hai cùng học tấn-tới thêm.
+
+Duyên cũng đã trở lại vui-vẻ và nhanh-nhẹn. Anh lại học giỏi như xưa. Anh trở nên bạn thân của Đang, Tỳ. Duyên cắt nghĩa giúp hai bạn những cái mình hiểu mà hai bạn chưa thật hiểu. Nhờ vậy chẳng bao lâu Đang và Tỳ đã có thể liệt vào hạng trung-bình. Về cuối niên học, thì họ đã vào hạng khá.
+
+Đi thi, cả ba cùng đỗ cả. Ngoài ra, Duyên được phần thưởng danh dự, Tỳ được phần thưởng người bạn tốt của cả lớp tặng; Đang chẳng được phần thưởng nào, nhưng cũng cố xin thày giáo cho đi dự cuộc phát phần thưởng để ôm sách cho hai bạn. Lúc ra về, anh khệ-nệ ôm hai tay hai chồng sách tướng, đi khệnh khạng ở giữa Duyên và Tỳ, mặt vui sướng và kiêu-hãnh như cái danh-dự của hai bạn chính anh cũng được hưởng chung. Tỳ cảm-động bảo:
+
+— Anh Đang ạ, cái phần thưởng của tôi, đáng nhẽ phải nhường anh mới phải. Chính anh mới là người bạn tốt.
+
+— Vì đã cho cả lớp ăn bạt tai và phật-thủ phải không?
+
+Cả ba cùng cười.
+
+HẾT
