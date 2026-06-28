@@ -1,4 +1,4 @@
-package tokenizer
+package txt
 
 func Levenshtein(a string, b string) int {
 
