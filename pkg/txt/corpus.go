@@ -1,7 +1,6 @@
 package txt
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -20,7 +19,6 @@ type Sentence struct {
 type fileStats struct {
 	source    string
 	sentences int
-	skipped   bool
 }
 
 type Corpus struct {
@@ -28,34 +26,31 @@ type Corpus struct {
 	files     []fileStats
 }
 
+const (
+	PAD = "<PAD>"
+	UNK = "<UNK>"
+	BOS = "<BOS>"
+	EOS = "<EOS>"
+
+	PAD_ID = 0
+	UNK_ID = 1
+	BOS_ID = 2
+	EOS_ID = 3
+
+	MinFreq = 2
+)
+
 func (c *Corpus) TotalSentences() int {
 	return len(c.Sentences)
 }
 
 func (c *Corpus) String() string {
-	var sb strings.Builder
-	totalFiles := 0
-	skippedFiles := 0
-
-	for _, f := range c.files {
-		if f.skipped {
-			skippedFiles++
-			fmt.Fprintf(&sb, "  skip:   %s\n", f.source)
-		} else {
-			totalFiles++
-			fmt.Fprintf(&sb, "  loaded: %-45s → %d sentences\n", f.source, f.sentences)
-		}
-	}
-
-	fmt.Fprintf(&sb, "\nTotal: %d sentences from %d files", len(c.Sentences), totalFiles)
-	if skippedFiles > 0 {
-		fmt.Fprintf(&sb, " (%d skipped)", skippedFiles)
-	}
-	return sb.String()
+	return fmt.Sprintf("Corpus { sentences: %d, files: %d }",
+		len(c.Sentences), len(c.files))
 }
 
 // LoadCorpus walks dir recursively, loading all .txt files found.
-func LoadCorpus(dir string) (Corpus, error) {
+func LoadCorpus(dir string) (*Corpus, error) {
 	var corpus Corpus
 
 	err := filepath.WalkDir(dir, func(path string, d os.DirEntry, err error) error {
@@ -76,11 +71,6 @@ func LoadCorpus(dir string) (Corpus, error) {
 			return fmt.Errorf("load %q: %w", path, err)
 		}
 
-		if len(sentences) == 0 {
-			corpus.files = append(corpus.files, fileStats{source: source, skipped: true})
-			return nil
-		}
-
 		for _, text := range sentences {
 			corpus.Sentences = append(corpus.Sentences, Sentence{
 				Text:   text,
@@ -92,9 +82,9 @@ func LoadCorpus(dir string) (Corpus, error) {
 	})
 
 	if err != nil {
-		return Corpus{}, err
+		return &Corpus{}, err
 	}
-	return corpus, nil
+	return &corpus, nil
 }
 
 func LoadDocument(path string) (Corpus, error) {
@@ -158,60 +148,12 @@ func extractSentences(text string) []string {
 	return sentences
 }
 
-const (
-	PAD = "<PAD>"
-	UNK = "<UNK>"
-	BOS = "<BOS>"
-	EOS = "<EOS>"
-
-	PAD_ID = 0
-	UNK_ID = 1
-	BOS_ID = 2
-	EOS_ID = 3
-
-	MinFreq = 2
-)
-
-type Vocab struct {
-	Token2ID map[string]int
-	ID2Token map[int]string
-}
-
-func (v *Vocab) Size() int {
-	return len(v.Token2ID)
-}
-
-func (v *Vocab) Encode(token string) int {
-	if id, ok := v.Token2ID[token]; ok {
-		return id
-	}
-	return UNK_ID
-}
-func (v *Vocab) SaveJSON(path string) error {
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	enc := json.NewEncoder(f)
-	enc.SetEscapeHTML(false)
-	enc.SetIndent("", "  ")
-
-	return enc.Encode(v.Token2ID)
-}
-
-// Tokenize splits a sentence into lowercase syllables, stripping punctuation.
 func Tokenize(text string) []string {
-	// Normalize to lowercase
 	text = strings.ToLower(text)
-
-	// Split on whitespace
 	raw := strings.Fields(text)
 
 	tokens := make([]string, 0, len(raw))
 	for _, word := range raw {
-		// Strip leading/trailing punctuation from each syllable
 		cleaned := strings.TrimFunc(word, func(r rune) bool {
 			return unicode.IsPunct(r) || unicode.IsSymbol(r)
 		})
@@ -222,8 +164,7 @@ func Tokenize(text string) []string {
 	return tokens
 }
 
-// BuildVocab tokenizes all sentences in the corpus and builds a Vocab.
-func BuildVocab(corpus Corpus) Vocab {
+func (corpus *Corpus) BuildVocab() *Vocab {
 	freq := make(map[string]int)
 	for _, s := range corpus.Sentences {
 		for _, token := range Tokenize(s.Text) {
@@ -231,7 +172,6 @@ func BuildVocab(corpus Corpus) Vocab {
 		}
 	}
 
-	// Collect tokens that meet MinFreq, sort for deterministic IDs
 	qualified := make([]string, 0, len(freq))
 	for token, count := range freq {
 		if count >= MinFreq {
@@ -240,7 +180,6 @@ func BuildVocab(corpus Corpus) Vocab {
 	}
 	sort.Strings(qualified)
 
-	// Build maps — special tokens first at fixed IDs
 	token2id := map[string]int{
 		PAD: PAD_ID,
 		UNK: UNK_ID,
@@ -261,7 +200,7 @@ func BuildVocab(corpus Corpus) Vocab {
 		nextID++
 	}
 
-	return Vocab{Token2ID: token2id, ID2Token: id2token}
+	return &Vocab{Token2ID: token2id, ID2Token: id2token}
 }
 
 // TokenizedSentence holds the original sentence alongside its token and encoded forms.
@@ -284,7 +223,7 @@ func (v *Vocab) EncodeTokens(tokens []string) []int {
 }
 
 // EncodeCorpus tokenizes and encodes every sentence in the corpus.
-func EncodeCorpus(corpus Corpus, vocab Vocab) []TokenizedSentence {
+func EncodeCorpus(corpus *Corpus, vocab *Vocab) []TokenizedSentence {
 	result := make([]TokenizedSentence, 0, len(corpus.Sentences))
 	for _, s := range corpus.Sentences {
 		tokens := Tokenize(s.Text)
