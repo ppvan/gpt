@@ -19,17 +19,17 @@ func main() {
 
 	model := nn.NewSequential(
 		nn.NewLinear(64, 32),
-		nn.LeakyRelu(0.01),
+		nn.LeakyRelu(0.02),
 		nn.NewLinear(32, 64),
-		nn.LeakyRelu(0.01),
+		nn.LeakyRelu(0.02),
 		nn.NewLinear(64, 10),
-		nn.LeakyRelu(0.01),
+		nn.LeakyRelu(0.02),
 		nn.NewLinear(10, 10),
 	)
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
 
-	epochs := 2000
+	epochs := 2048
 	batchSize := 32
 
 	for m := range net.Fit(train, epochs, batchSize) {
