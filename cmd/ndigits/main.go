@@ -29,7 +29,7 @@ func main() {
 
 	net := nn.NewNetwork(model, nn.CrossEntropy())
 
-	epochs := 1000
+	epochs := 2000
 	batchSize := 32
 
 	for m := range net.Fit(train, epochs, batchSize) {
