@@ -13,8 +13,8 @@ type LinearLayer struct {
 
 func NewLinear(inputs, outputs int) *LinearLayer {
 	return &LinearLayer{
-		Weights:         heMat(inputs, outputs),
-		Biases:          heMat(1, outputs),
+		Weights:         HeMat(inputs, outputs),
+		Biases:          HeMat(1, outputs),
 		weightOptimizer: &Gradient{Rate: 0.01},
 		biasOptimizer:   &Gradient{Rate: 0.01},
 	}

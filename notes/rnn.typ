@@ -1,3 +1,5 @@
+#import "@preview/cetz:0.5.2"
+
 == Recurrent Neural Network
 
 === Tại sao lại có RNN?
@@ -21,6 +23,49 @@ $
 $
 
 Đây chính là công thức Recurrent Neural Network. Vẽ thành diagram thì nó thành cái neuron xoay vòng ý.
+
+#cetz.canvas({
+  import cetz.draw: *
+
+  // Styles
+  set-style(
+    circle: (radius: 0.5, fill: rgb("#eef4ff"), stroke: black),
+    rect: (fill: rgb("#fff3e0"), stroke: black),
+    content: (padding: 0.1)
+  )
+
+  // Input x_t
+  rect((-4, -0.5), (-2.8, 0.5), name: "x")
+  content("x.center", $x_t$)
+
+  // RNN cell (tanh block)
+  circle((0, 0), radius: 1, name: "cell")
+  content("cell.center", $tanh$)
+
+  // Output / hidden state h_t
+  rect((2.8, -0.5), (4, 0.5), name: "h")
+  content("h.center", $h_t$)
+
+  // Weight labels
+  content((-1.5, 0.6), $W_x$)
+  content((1.5, 0.6), $W_h$)
+
+  // Arrows: input -> cell
+  line("x.east", "cell.west", mark: (end: ">"))
+
+  // Arrows: cell -> output
+  line("cell.east", "h.west", mark: (end: ">"))
+
+  // Recurrent loop: h_t feeds back into cell (h_{t-1})
+  line("h.north", (4, 2), (0, 2), "cell.north",
+       mark: (end: ">"))
+  content((2, 2.3), $h_{t-1}$)
+
+  // Bias term
+  circle((0, -2), radius: 0.35, name: "bias")
+  content("bias.center", $b$)
+  line("bias.north", "cell.south", mark: (end: ">"))
+})
 
 == Fomula
 
@@ -53,86 +98,173 @@ $
 
 = Step-by-step Example
 
-Let $H = 3$ (3 hidden units). We use tiny made-up weights to keep the math readable.
+Problem: Predict the Fibonacci sequence:
+1, 1, 2, 3, 5 ....
 
-== Setup
+Input: 1
 
-$
-x_t = mat(1) quad upright("shape") (1,1) quad arrow.l upright("Fibonacci input")
-$
+Output: 2
 
-$
-W_x = mat(0.5; 0.3; 0.1) quad upright("shape") (3,1)
-$
+Thêm cái RRN đơn giản nhất có thể:
 
-$
-W_h = mat(0.1, 0.0, 0.2; 0.0, 0.2, 0.1; 0.3, 0.1, 0.0) quad upright("shape") (3,3)
-$
+- Input state: I = 1
+- Hidden state: H = 3
+- Output state: O = 1
 
 $
-b_h = mat(0.1; 0.1; 0.1) quad upright("shape") (3,1)
+  h_t &= tanh(W_h · h_{t-1}  +  W_x · x_t  +  b_h) \
+  y_t &= W_y · h_t  +  b_y
 $
 
-$
-h_(t-1) = mat(0.0; 0.0; 0.0) quad upright("shape") (3,1) quad arrow.l upright("zero at start")
-$
+Vì 
 
 $
-W_y = mat(0.6, 0.4, 0.3) quad upright("shape") (1,3)
+y_t = (1 times 1) => b_y = (1 times 1) \
+h_t, h_(t-1) = (3 times 1) => W_y = (1 times 3) \
+
+h_t, h_(t-1) = (3 times 1) => W_h = (3 times 3), W_x = (3 times 1), b_h = (3 times 1)
 $
 
-$
-b_y = mat(0.0) quad upright("shape") (1,1)
-$
 
-== Step 1 — Compute $W_x dot x_t$ #h(0.5em) → shape $(3,1)$
+Loss:
 
 $
-mat(0.5; 0.3; 0.1) times mat(1) = mat(0.5; 0.3; 0.1)
+  L = 1/ 2 sum_(t=0)^T (y^hat_t - y_t)^2\
+
+  T = 4
 $
 
-== Step 2 — Compute $W_h dot h_(t-1)$ #h(0.5em) → shape $(3,1)$
+#table(
+  columns: (1fr, 1fr),
+  align: left,
 
-$
-mat(0.1, 0.0, 0.2; 0.0, 0.2, 0.1; 0.3, 0.1, 0.0)
-times
-mat(0.0; 0.0; 0.0)
-=
-mat(0.0; 0.0; 0.0)
-$
+  [*Forward*], [*Backward*],
 
-(zero because $h$ is zero at $t=0$)
+  [
+  $
+    z_t = W_x x_t + W_h h_(t-1) + b_h
+  $
+  ],
+  [
+  $
+    (partial L)/(partial z_t)
+      =
+      (partial L)/(partial h_t)
+      dot.o
+      (1 - h_t^2)
+  $
+  ],
 
-== Step 3 — Add everything + bias #h(0.5em) → shape $(3,1)$
+  [
+  $
+    h_t = tanh(z_t)
+  $
+  ],
+  [
+  $
+    (partial L)/(partial h_t)
+      =
+      W_y^T
+      (partial L)/(partial y^hat_t)
+      +
+      (partial L)/(partial h_(t+1))
+  $
+  ],
 
-$
-mat(0.5; 0.3; 0.1) + mat(0.0; 0.0; 0.0) + mat(0.1; 0.1; 0.1) = mat(0.6; 0.4; 0.2)
-$
+  [
+  $
+    y^hat_t = W_y h_t + b_y
+  $
+  ],
+  [
+  $
+    (partial L)/(partial y^hat_t)
+      =
+      y^hat_t - y_t
+  $
+  ],
 
-== Step 4 — Apply $tanh$ #h(0.5em) → $h_t$, shape $(3,1)$
+  [
+  $
+    W_y
+  $
+  ],
+  [
+  $
+    (partial L)/(partial W_y)
+      =
+      (partial L)/(partial y^hat_t)
+      h_t^T
+  $
+  ],
 
-$
-h_t = tanh mat(0.6; 0.4; 0.2) = mat(0.537; 0.380; 0.197)
-$
+  [
+  $
+    b_y
+  $
+  ],
+  [
+  $
+    (partial L)/(partial b_y)
+      =
+      (partial L)/(partial y^hat_t)
+  $
+  ],
 
-== Step 5 — Compute output $y_t = W_y dot h_t + b_y$ #h(0.5em) → shape $(1,1)$
+  [
+  $
+    W_x
+  $
+  ],
+  [
+  $
+    (partial L)/(partial W_x)
+      =
+      (partial L)/(partial z_t)
+      x_t^T
+  $
+  ],
 
-$
-mat(0.6, 0.4, 0.3) times mat(0.537; 0.380; 0.197) + mat(0.0)
-$
+  [
+  $
+    W_h
+  $
+  ],
+  [
+  $
+    (partial L)/(partial W_h)
+      =
+      (partial L)/(partial z_t)
+      h_(t-1)^T
+  $
+  ],
 
-$
-= mat(0.6 times 0.537 + 0.4 times 0.380 + 0.3 times 0.197) + 0
-$
+  [
+  $
+    b_h
+  $
+  ],
+  [
+  $
+    (partial L)/(partial b_h)
+      =
+      (partial L)/(partial z_t)
+  $
+  ],
 
-$
-= mat(0.322 + 0.152 + 0.059)
-$
-
-$
-= mat(0.533)
-$
-
-*Prediction:* $0.533$ — target was $1$. The network is untrained, so it's way off.
-After backprop across many steps of $[1, 1, 2, 3, 5, 8, dots]$,
-the weights adjust until predictions converge.
+  [
+  $
+    h_t
+      arrow
+      h_(t+1)
+  $
+  ],
+  [
+  $
+    (partial L)/(partial h_(t-1))
+      =
+      W_h^T
+      (partial L)/(partial z_t)
+  $
+  ],
+)

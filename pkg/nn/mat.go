@@ -59,7 +59,8 @@ func (mat Mat) Hadamard(other Mat) Mat {
 
 func (mat Mat) Multiply(other Mat) Mat {
 	if mat.Columns != other.Rows {
-		panic("incompatible matrices")
+		msg := fmt.Sprintf("incompatible matrices: (%v x %v) and (%v x %v)", mat.Rows, mat.Columns, other.Rows, other.Columns)
+		panic(msg)
 	}
 
 	m, n, p := mat.Rows, mat.Columns, other.Columns
@@ -188,7 +189,7 @@ func randomUniform(min, max float64) float64 {
 	return min + rand.Float64()*(max-min)
 }
 
-func xavierMat(row, column int) Mat {
+func XavierMat(row, column int) Mat {
 	fanIn := float64(row)
 	fanOut := float64(column)
 
@@ -199,7 +200,7 @@ func xavierMat(row, column int) Mat {
 	})
 }
 
-func heMat(row, column int) Mat {
+func HeMat(row, column int) Mat {
 	fanIn := float64(row)
 
 	a := math.Sqrt(2.0 / fanIn)
@@ -239,6 +240,7 @@ func (mat Mat) OneHot(numClasses int) Mat {
 	}
 	return result
 }
+
 func (mat Mat) Slice(start, end int) Mat {
 	if start < 0 || end > mat.Rows || start > end {
 		panic("invalid slice range")
@@ -250,6 +252,22 @@ func (mat Mat) Slice(start, end int) Mat {
 	copy(
 		result.weights,
 		mat.weights[start*mat.Columns:end*mat.Columns],
+	)
+
+	return result
+}
+
+func (mat Mat) Row(index int) Mat {
+	if index < 0 || index > mat.Rows-1 {
+		panic("invalid row")
+	}
+
+	rows := 1
+	result := NewZeroMat(rows, mat.Columns)
+
+	copy(
+		result.weights,
+		mat.weights[index*mat.Columns:(index+1)*mat.Columns],
 	)
 
 	return result

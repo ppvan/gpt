@@ -88,3 +88,26 @@ func (r *leakyRelu) Backward(dOut Mat) Mat {
 		}),
 	)
 }
+
+type tanh struct {
+	lastOut Mat
+}
+
+func (t *tanh) Forward(x Mat) Mat {
+	out := x.Apply(func(v float64) float64 {
+		return math.Tanh(v)
+	})
+	t.lastOut = out
+	return out
+}
+
+func (t *tanh) Backward(dOut Mat) Mat {
+	// tanh'(x) = 1 - tanh(x)^2
+	return dOut.Hadamard(t.lastOut.Apply(func(v float64) float64 {
+		return 1 - v*v
+	}))
+}
+
+func Tanh() *tanh {
+	return &tanh{}
+}
