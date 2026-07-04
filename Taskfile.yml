@@ -7,6 +7,9 @@ vars:
     - bpe
     - logic_gates
     - ndigits
+    - avg
+    - edit_distance
+    - vocab
     # - prime
 
 tasks:

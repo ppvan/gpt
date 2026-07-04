@@ -13,19 +13,14 @@ func main() {
 }
 
 func xor() {
-	x := nn.NewMat([][]float64{
-		{0, 0}, {0, 1}, {1, 0}, {1, 1},
-	})
-	labels := nn.NewMat([][]float64{
-		{0},
-		{1},
-		{1},
-		{0},
-	})
+	x := nn.NewMat(
+		4, 2, []float64{0, 0, 0, 1, 1, 0, 1, 1},
+	)
+	labels := nn.NewMat(4, 1, []float64{0, 1, 1, 0})
 	data := nn.Data{
 		X: x, Y: labels,
 	}
-	model := nn.NewMultiLayerPerceptron(
+	model := nn.NewDense(
 		nn.NewLinear(2, 4),
 		nn.NewLeakyReLU(0.1),
 		nn.NewLinear(4, 16),
@@ -43,13 +38,12 @@ func xor() {
 
 	fmt.Println("===== FINAL PREDICTIONS =====")
 	for i := 0; i < x.Rows; i++ {
-		row := x.RowAt(i)
-		input := nn.NewRowMat(row)
+		input := x.Slice(i, i+1)
 		pred, err := net.Predict(input)
 		if err != nil {
-			fmt.Printf("%v | %v = error: %v\n", row[0], row[1], err)
+			fmt.Printf("%v | %v = error: %v\n", input.Get(0, 0), input.Get(0, 1), err)
 			continue
 		}
-		fmt.Printf("%v | %v = %d\n", row[0], row[1], pred.Class)
+		fmt.Printf("%v | %v = %d\n", input.Get(0, 0), input.Get(0, 1), pred.Class)
 	}
 }

@@ -18,8 +18,8 @@ func NewLinear(inputs, outputs int) *Linear {
 
 func (l *Linear) Forward(x Mat) (out Mat, cache Cache) {
 	one := NewZeroMat(x.Rows, 1).Apply(func(f float64) float64 { return 1 })
-	b := one.Multiply(l.biases)
-	out = x.Multiply(l.weights).Add(b)
+	b := one.Dot(l.biases)
+	out = x.Dot(l.weights).Add(b)
 	return out, linearCache{input: x}
 }
 
@@ -28,9 +28,9 @@ func (l *Linear) Backward(cache Cache, dOut Mat) (dIn Mat, grads Grads) {
 
 	oneT := NewZeroMat(1, dOut.Rows).Apply(func(f float64) float64 { return 1 })
 
-	dW := c.input.Transpose().Multiply(dOut)
-	dB := oneT.Multiply(dOut)
-	dIn = dOut.Multiply(l.weights.Transpose())
+	dW := c.input.Transpose().Dot(dOut)
+	dB := oneT.Dot(dOut)
+	dIn = dOut.Dot(l.weights.Transpose())
 
 	grads = Grads{
 		"W": dW,

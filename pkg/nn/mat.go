@@ -2,10 +2,14 @@ package nn
 
 import (
 	"fmt"
-	"math"
-	"math/rand"
 	"strconv"
 	"strings"
+	"sync"
+)
+
+const (
+	tileM = 64 // rows tile
+	tileK = 64 // depth tile
 )
 
 type Mat struct {
@@ -57,49 +61,77 @@ func (mat Mat) Hadamard(other Mat) Mat {
 	return mat.Combine(other, func(a, b float64) float64 { return a * b })
 }
 
-func (mat Mat) Multiply(other Mat) Mat {
+func (mat Mat) Dot(other Mat) Mat {
 	if mat.Columns != other.Rows {
 		msg := fmt.Sprintf("incompatible matrices: (%v x %v) and (%v x %v)", mat.Rows, mat.Columns, other.Rows, other.Columns)
 		panic(msg)
 	}
-
 	m, n, p := mat.Rows, mat.Columns, other.Columns
-
 	result := make([]float64, m*p)
-
 	a := mat.weights
 	b := other.weights
 
-	for i := range m {
-		aRow := i * n
-		cRow := i * p
+	const numWorkers = 4
+	// split rows [0, m) into numWorkers chunks
+	chunk := (m + numWorkers - 1) / numWorkers
 
-		for k := range n {
-			aik := a[aRow+k]
-			bRow := k * p
-			// slice onces so compiler remove bound checks
-			c := result[cRow : cRow+p]
-			bb := b[bRow : bRow+p]
-
-			// manual loop unrolling
-			j := 0
-			for ; j+3 < p; j += 4 {
-				c[j+0] += aik * bb[j+0]
-				c[j+1] += aik * bb[j+1]
-				c[j+2] += aik * bb[j+2]
-				c[j+3] += aik * bb[j+3]
-			}
-
-			for ; j < p; j++ {
-				c[j] += aik * bb[j]
-			}
+	var wg sync.WaitGroup
+	for w := range numWorkers {
+		rowStart := w * chunk
+		rowEnd := min(rowStart+chunk, m)
+		if rowStart >= rowEnd {
+			continue
 		}
+
+		wg.Add(1)
+		go func(rowStart, rowEnd int) {
+			defer wg.Done()
+			dotTiled(a, b, result, rowStart, rowEnd, n, p)
+		}(rowStart, rowEnd)
 	}
+	wg.Wait()
 
 	return Mat{
 		weights: result,
 		Rows:    m,
 		Columns: p,
+	}
+}
+
+// dotTiled computes result[rowStart:rowEnd, :] using tiling on i and k.
+func dotTiled(a, b, result []float64, rowStart, rowEnd, n, p int) {
+	for ii := rowStart; ii < rowEnd; ii += tileM {
+		iMax := ii + tileM
+		if iMax > rowEnd {
+			iMax = rowEnd
+		}
+		for kk := 0; kk < n; kk += tileK {
+			kMax := kk + tileK
+			if kMax > n {
+				kMax = n
+			}
+			for i := ii; i < iMax; i++ {
+				aRow := i * n
+				cRow := i * p
+				c := result[cRow : cRow+p]
+				for k := kk; k < kMax; k++ {
+					aik := a[aRow+k]
+					bRow := k * p
+					bb := b[bRow : bRow+p]
+
+					j := 0
+					for ; j+3 < p; j += 4 {
+						c[j+0] += aik * bb[j+0]
+						c[j+1] += aik * bb[j+1]
+						c[j+2] += aik * bb[j+2]
+						c[j+3] += aik * bb[j+3]
+					}
+					for ; j < p; j++ {
+						c[j] += aik * bb[j]
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -147,28 +179,8 @@ func (mat Mat) Sum() float64 {
 	return total
 }
 
-func (mat Mat) Count() int {
-	return len(mat.weights)
-}
-
 func (mat Mat) Mean() float64 {
-	return mat.Sum() / float64(mat.Count())
-}
-
-func (mat Mat) RowAt(r int) []float64 {
-	out := make([]float64, mat.Columns)
-	copy(out, mat.weights[r*mat.Columns:(r+1)*mat.Columns])
-	return out
-}
-
-func NewRowMat(data []float64) Mat {
-	w := make([]float64, len(data))
-	copy(w, data)
-	return Mat{
-		weights: w,
-		Rows:    1,
-		Columns: len(data),
-	}
+	return mat.Sum() / float64(len(mat.weights))
 }
 
 func NewZeroMat(row, column int) Mat {
@@ -179,66 +191,12 @@ func NewZeroMat(row, column int) Mat {
 	}
 }
 
-func randomMat(row, column int) Mat {
-	return NewZeroMat(row, column).Apply(func(f float64) float64 {
-		return rand.Float64()*2 - 1
-	})
-}
-
-func randomUniform(min, max float64) float64 {
-	return min + rand.Float64()*(max-min)
-}
-
-func XavierMat(row, column int) Mat {
-	fanIn := float64(row)
-	fanOut := float64(column)
-
-	a := math.Sqrt(6.0 / (fanIn + fanOut))
-
-	return NewZeroMat(row, column).Apply(func(f float64) float64 {
-		return randomUniform(-a, a)
-	})
-}
-
-func HeMat(row, column int) Mat {
-	fanIn := float64(row)
-
-	a := math.Sqrt(2.0 / fanIn)
-
-	return NewZeroMat(row, column).Apply(func(f float64) float64 {
-		return randomUniform(-a, a)
-	})
-}
-
-func NewMat(data [][]float64) Mat {
-	if len(data) == 0 {
-		return Mat{Rows: 0, Columns: 0}
+func NewMat(row, column int, data []float64) Mat {
+	return Mat{
+		weights: data,
+		Rows:    row,
+		Columns: column,
 	}
-	row := len(data)
-	col := len(data[0])
-	flat := make([]float64, 0, row*col)
-	for _, r := range data {
-		if len(r) != col {
-			panic("NewMat: ragged input, all rows must have the same length")
-		}
-		flat = append(flat, r...)
-	}
-	return Mat{weights: flat, Rows: row, Columns: col}
-}
-
-func (mat Mat) OneHot(numClasses int) Mat {
-	if mat.Columns != 1 {
-		panic(fmt.Sprintf("OneHot: expected a single-column matrix, got %d columns", mat.Columns))
-	}
-	result := NewZeroMat(mat.Rows, numClasses)
-	for i := 0; i < mat.Rows; i++ {
-		label := int(mat.Get(i, 0))
-		if label < 0 || label >= numClasses {
-			panic(fmt.Sprintf("OneHot: label %d at row %d out of range [0, %d)", label, i, numClasses))
-		}
-		result.Set(i, label, 1.0)
-	}
-	return result
 }
 
 func (mat Mat) Slice(start, end int) Mat {
@@ -254,65 +212,6 @@ func (mat Mat) Slice(start, end int) Mat {
 		mat.weights[start*mat.Columns:end*mat.Columns],
 	)
 
-	return result
-}
-
-func (mat Mat) Row(index int) Mat {
-	if index < 0 || index > mat.Rows-1 {
-		panic("invalid row")
-	}
-
-	rows := 1
-	result := NewZeroMat(rows, mat.Columns)
-
-	copy(
-		result.weights,
-		mat.weights[index*mat.Columns:(index+1)*mat.Columns],
-	)
-
-	return result
-}
-
-func (mat Mat) ArgMax() Mat {
-	if mat.Columns == 0 {
-		panic("ArgMax: matrix has no columns")
-	}
-
-	result := NewZeroMat(mat.Rows, 1)
-
-	for r := 0; r < mat.Rows; r++ {
-		maxIdx := 0
-		maxVal := mat.Get(r, 0)
-
-		for c := 1; c < mat.Columns; c++ {
-			v := mat.Get(r, c)
-			if v > maxVal {
-				maxVal = v
-				maxIdx = c
-			}
-		}
-
-		result.Set(r, 0, float64(maxIdx))
-	}
-
-	return result
-}
-
-func AppendRows(a, b Mat) Mat {
-	if a.Rows == 0 {
-		return b
-	}
-	result := NewZeroMat(a.Rows+b.Rows, a.Columns)
-	for i := range a.Rows {
-		for j := range a.Columns {
-			result.Set(i, j, a.Get(i, j))
-		}
-	}
-	for i := range b.Rows {
-		for j := range b.Columns {
-			result.Set(a.Rows+i, j, b.Get(i, j))
-		}
-	}
 	return result
 }
 

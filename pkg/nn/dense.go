@@ -2,19 +2,19 @@ package nn
 
 import "fmt"
 
-type MultiLayerPerceptron struct {
+type Dense struct {
 	layers []Layer
 }
 
-func NewMultiLayerPerceptron(layers ...Layer) *MultiLayerPerceptron {
-	return &MultiLayerPerceptron{layers: layers}
+func NewDense(layers ...Layer) *Dense {
+	return &Dense{layers: layers}
 }
 
-func (s *MultiLayerPerceptron) Add(l Layer) {
+func (s *Dense) Add(l Layer) {
 	s.layers = append(s.layers, l)
 }
 
-func (s *MultiLayerPerceptron) Forward(x Mat) (Mat, Cache) {
+func (s *Dense) Forward(x Mat) (Mat, Cache) {
 	caches := make([]Cache, len(s.layers))
 	out := x
 	for i, l := range s.layers {
@@ -25,7 +25,7 @@ func (s *MultiLayerPerceptron) Forward(x Mat) (Mat, Cache) {
 	return out, caches
 }
 
-func (s *MultiLayerPerceptron) Backward(cache Cache, dOut Mat) (Mat, Grads) {
+func (s *Dense) Backward(cache Cache, dOut Mat) (Mat, Grads) {
 	caches := cache.([]Cache)
 	grads := Grads{}
 	dIn := dOut
@@ -40,7 +40,7 @@ func (s *MultiLayerPerceptron) Backward(cache Cache, dOut Mat) (Mat, Grads) {
 	return dIn, grads
 }
 
-func (s *MultiLayerPerceptron) Params() Params {
+func (s *Dense) Params() Params {
 	params := Params{}
 	for i, l := range s.layers {
 		pl, ok := l.(ParamLayer)
@@ -54,7 +54,7 @@ func (s *MultiLayerPerceptron) Params() Params {
 	return params
 }
 
-func (s *MultiLayerPerceptron) SetParams(p Params) {
+func (s *Dense) SetParams(p Params) {
 	for i, l := range s.layers {
 		pl, ok := l.(ParamLayer)
 		if !ok {

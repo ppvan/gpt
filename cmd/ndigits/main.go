@@ -15,7 +15,7 @@ func main() {
 	data = data.Shuffle()
 	train, val, _ := data.Split(0.80, 0.20, 0)
 
-	model := nn.NewMultiLayerPerceptron(
+	model := nn.NewDense(
 		nn.NewLinear(64, 32),
 		nn.NewLeakyReLU(0.02),
 		nn.NewLinear(32, 64),
