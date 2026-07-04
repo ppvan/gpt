@@ -10,6 +10,7 @@ vars:
     - avg
     - edit_distance
     - vocab
+    - first_number
     # - prime
 
 tasks:
