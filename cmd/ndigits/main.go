@@ -1,46 +1,43 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/ppvan/gpt/pkg/nn"
+	"github.com/ppvan/gpt/pkg/mm"
 )
 
 func main() {
-
-	data, err := nn.LoadCSV("cmd/ndigits/digits.csv", 64, false)
+	data, err := mm.LoadCSV("cmd/ndigits/digits.csv", 64, false)
 	if err != nil {
 		panic(err)
 	}
-
 	data = data.Shuffle()
-
 	train, val, _ := data.Split(0.80, 0.20, 0)
 
-	model := nn.NewSequential(
-		nn.NewLinear(64, 32),
-		nn.LeakyRelu(0.02),
-		nn.NewLinear(32, 64),
-		nn.LeakyRelu(0.02),
-		nn.NewLinear(64, 10),
-		nn.LeakyRelu(0.02),
-		nn.NewLinear(10, 10),
+	model := mm.NewMultiLayerPerceptron(
+		mm.NewLinear(64, 32),
+		mm.NewLeakyReLU(0.02),
+		mm.NewLinear(32, 64),
+		mm.NewLeakyReLU(0.02),
+		mm.NewLinear(64, 10),
+		mm.NewLeakyReLU(0.02),
+		mm.NewLinear(10, 10),
 	)
-
-	net := nn.NewNetwork(model, nn.CrossEntropy())
+	opt := mm.NewGradient(0.01)
+	net := mm.NewNetwork(model, mm.CrossEntropy(), opt)
 
 	epochs := 2048
 	batchSize := 32
-
-	for m := range net.Fit(train, epochs, batchSize) {
+	ctx := context.Background()
+	for m := range net.Fit(ctx, train, epochs, batchSize) {
 		fmt.Printf("epoch=%d loss=%.6f\r", m.Epoch, m.Loss)
 	}
-
 	fmt.Println()
 
-	// ---- EVALUATION ----
-
-	metrics := net.Evaluate(val)
-
+	metrics, err := net.Evaluate(val)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(metrics)
 }
