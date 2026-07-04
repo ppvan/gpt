@@ -5,7 +5,7 @@ import (
 	"math"
 	"math/rand"
 
-	"github.com/ppvan/gpt/pkg/nn"
+	nn "github.com/ppvan/gpt/pkg/mm"
 )
 
 // rnnParams holds all trainable weights/biases for the RNN.
