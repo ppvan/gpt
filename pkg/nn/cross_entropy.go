@@ -1,4 +1,4 @@
-package mm
+package nn
 
 import (
 	"errors"

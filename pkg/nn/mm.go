@@ -1,4 +1,4 @@
-package mm
+package nn
 
 type Grads map[string]Mat
 type Params map[string]Mat

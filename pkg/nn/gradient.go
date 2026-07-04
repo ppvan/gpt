@@ -1,4 +1,4 @@
-package mm
+package nn
 
 type Gradient struct {
 	Rate float64

@@ -1,4 +1,4 @@
-package mm
+package nn
 
 type ReLU struct{}
 type reluCache struct {

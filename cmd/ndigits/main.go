@@ -4,28 +4,28 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ppvan/gpt/pkg/mm"
+	"github.com/ppvan/gpt/pkg/nn"
 )
 
 func main() {
-	data, err := mm.LoadCSV("cmd/ndigits/digits.csv", 64, false)
+	data, err := nn.LoadCSV("cmd/ndigits/digits.csv", 64, false)
 	if err != nil {
 		panic(err)
 	}
 	data = data.Shuffle()
 	train, val, _ := data.Split(0.80, 0.20, 0)
 
-	model := mm.NewMultiLayerPerceptron(
-		mm.NewLinear(64, 32),
-		mm.NewLeakyReLU(0.02),
-		mm.NewLinear(32, 64),
-		mm.NewLeakyReLU(0.02),
-		mm.NewLinear(64, 10),
-		mm.NewLeakyReLU(0.02),
-		mm.NewLinear(10, 10),
+	model := nn.NewMultiLayerPerceptron(
+		nn.NewLinear(64, 32),
+		nn.NewLeakyReLU(0.02),
+		nn.NewLinear(32, 64),
+		nn.NewLeakyReLU(0.02),
+		nn.NewLinear(64, 10),
+		nn.NewLeakyReLU(0.02),
+		nn.NewLinear(10, 10),
 	)
-	opt := mm.NewGradient(0.01)
-	net := mm.NewNetwork(model, mm.CrossEntropy(), opt)
+	opt := nn.NewGradient(0.01)
+	net := nn.NewNetwork(model, nn.CrossEntropy(), opt)
 
 	epochs := 2048
 	batchSize := 32

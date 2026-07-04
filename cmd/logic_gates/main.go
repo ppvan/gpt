@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ppvan/gpt/pkg/mm"
+	"github.com/ppvan/gpt/pkg/nn"
 )
 
 func main() {
@@ -13,27 +13,27 @@ func main() {
 }
 
 func xor() {
-	x := mm.NewMat([][]float64{
+	x := nn.NewMat([][]float64{
 		{0, 0}, {0, 1}, {1, 0}, {1, 1},
 	})
-	labels := mm.NewMat([][]float64{
+	labels := nn.NewMat([][]float64{
 		{0},
 		{1},
 		{1},
 		{0},
 	})
-	data := mm.Data{
+	data := nn.Data{
 		X: x, Y: labels,
 	}
-	model := mm.NewMultiLayerPerceptron(
-		mm.NewLinear(2, 4),
-		mm.NewLeakyReLU(0.1),
-		mm.NewLinear(4, 16),
-		mm.NewLeakyReLU(0.1),
-		mm.NewLinear(16, 2),
+	model := nn.NewMultiLayerPerceptron(
+		nn.NewLinear(2, 4),
+		nn.NewLeakyReLU(0.1),
+		nn.NewLinear(4, 16),
+		nn.NewLeakyReLU(0.1),
+		nn.NewLinear(16, 2),
 	)
-	opt := mm.NewGradient(0.01)
-	net := mm.NewNetwork(model, mm.CrossEntropy(), opt)
+	opt := nn.NewGradient(0.01)
+	net := nn.NewNetwork(model, nn.CrossEntropy(), opt)
 
 	ctx := context.Background()
 	for m := range net.Fit(ctx, data, 5000, 4) {
@@ -44,7 +44,7 @@ func xor() {
 	fmt.Println("===== FINAL PREDICTIONS =====")
 	for i := 0; i < x.Rows; i++ {
 		row := x.RowAt(i)
-		input := mm.NewRowMat(row)
+		input := nn.NewRowMat(row)
 		pred, err := net.Predict(input)
 		if err != nil {
 			fmt.Printf("%v | %v = error: %v\n", row[0], row[1], err)

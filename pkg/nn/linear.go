@@ -1,4 +1,4 @@
-package mm
+package nn
 
 type Linear struct {
 	weights Mat
