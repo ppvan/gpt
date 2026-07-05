@@ -17,18 +17,24 @@ func main() {
 
 	model := nn.NewDense(
 		nn.NewLinear(64, 32),
+		nn.NewBatchNorm(32),
 		nn.NewLeakyReLU(0.02),
+
 		nn.NewLinear(32, 64),
+		nn.NewBatchNorm(64),
 		nn.NewLeakyReLU(0.02),
+
 		nn.NewLinear(64, 10),
+		nn.NewBatchNorm(10),
 		nn.NewLeakyReLU(0.02),
+
 		nn.NewLinear(10, 10),
 	)
-	opt := nn.NewGradient(0.01)
+	opt := nn.NewGradient(0.05)
 	net := nn.NewNetwork(model, nn.CrossEntropy(), opt)
 
-	epochs := 2048
-	batchSize := 32
+	epochs := 1024
+	batchSize := 64
 	ctx := context.Background()
 	for m := range net.Fit(ctx, train, epochs, batchSize) {
 		fmt.Printf("epoch=%d loss=%.6f\r", m.Epoch, m.Loss)
