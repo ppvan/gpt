@@ -24,13 +24,13 @@ func main() {
 		nn.NewBatchNorm(64),
 		nn.NewLeakyReLU(0.02),
 
-		nn.NewLinear(64, 10),
-		nn.NewBatchNorm(10),
+		nn.NewLinear(64, 16),
+		nn.NewBatchNorm(16),
 		nn.NewLeakyReLU(0.02),
 
-		nn.NewLinear(10, 10),
+		nn.NewLinear(16, 10),
 	)
-	opt := nn.NewGradient(0.05)
+	opt := nn.NewMomentum(0.2, 0.9)
 	net := nn.NewNetwork(model, nn.CrossEntropy(), opt)
 
 	epochs := 1024
