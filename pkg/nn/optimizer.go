@@ -82,3 +82,66 @@ func (r *RMSProp) Update(name string, param, grad Mat) Mat {
 
 	return param.Sub(update.Scale(r.Rate))
 }
+
+type Adam struct {
+	m       map[string]Mat
+	v       map[string]Mat
+	t       map[string]int
+	Rate    float64
+	Beta1   float64
+	Beta2   float64
+	Epsilon float64
+}
+
+func NewAdam(rate, beta1, beta2, eps float64) *Adam {
+	return &Adam{
+		m:       make(map[string]Mat),
+		v:       make(map[string]Mat),
+		t:       make(map[string]int),
+		Rate:    rate,
+		Beta1:   beta1,
+		Beta2:   beta2,
+		Epsilon: eps,
+	}
+}
+
+func (a *Adam) Update(name string, param, grad Mat) Mat {
+	m, ok := a.m[name]
+	if !ok {
+		m = NewZeroMat(grad.Rows, grad.Columns)
+	}
+	v, ok := a.v[name]
+	if !ok {
+		v = NewZeroMat(grad.Rows, grad.Columns)
+	}
+
+	a.t[name]++
+	t := a.t[name]
+
+	// first moment (mean of gradient)
+	m = m.Scale(a.Beta1).
+		Add(grad.Scale(1 - a.Beta1))
+
+	// second moment (uncentered variance of gradient)
+	grad2 := grad.Hadamard(grad)
+	v = v.Scale(a.Beta2).
+		Add(grad2.Scale(1 - a.Beta2))
+
+	a.m[name] = m
+	a.v[name] = v
+
+	// bias correction
+	biasCorr1 := 1 - math.Pow(a.Beta1, float64(t))
+	biasCorr2 := 1 - math.Pow(a.Beta2, float64(t))
+
+	mHat := m.Scale(1 / biasCorr1)
+	vHat := v.Scale(1 / biasCorr2)
+
+	// sqrt(vHat) + eps, inverted
+	denom := vHat.Apply(func(x float64) float64 {
+		return 1 / (math.Sqrt(x) + a.Epsilon)
+	})
+
+	update := mHat.Hadamard(denom)
+	return param.Sub(update.Scale(a.Rate))
+}
