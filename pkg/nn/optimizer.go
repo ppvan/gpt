@@ -1,5 +1,7 @@
 package nn
 
+import "math"
+
 type Gradient struct {
 	Rate float64
 }
@@ -35,4 +37,48 @@ func (g *Momentum) Update(name string, param Mat, grad Mat) Mat {
 	g.gradAvg[name] = v
 
 	return param.Sub(v.Scale(g.Rate))
+}
+
+type RMSProp struct {
+	avgSq map[string]Mat
+
+	Rate    float64
+	Beta    float64
+	Epsilon float64
+}
+
+func NewRMSProp(rate, beta, eps float64) *RMSProp {
+	return &RMSProp{
+		avgSq:   make(map[string]Mat),
+		Rate:    rate,
+		Beta:    beta,
+		Epsilon: eps,
+	}
+}
+
+func (r *RMSProp) Update(name string, param, grad Mat) Mat {
+	s, ok := r.avgSq[name]
+	if !ok {
+		s = NewZeroMat(grad.Rows, grad.Columns)
+	}
+
+	// grad²
+	grad2 := grad.Hadamard(grad)
+
+	// running average
+	s = s.Scale(r.Beta).
+		Add(grad2.Scale(1 - r.Beta))
+
+	r.avgSq[name] = s
+
+	// sqrt(s) + eps
+	term := s.
+		Apply(math.Sqrt).
+		Apply(func(v float64) float64 {
+			return 1 / (v + r.Epsilon)
+		})
+
+	update := grad.Hadamard(term)
+
+	return param.Sub(update.Scale(r.Rate))
 }

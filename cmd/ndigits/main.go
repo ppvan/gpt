@@ -30,10 +30,10 @@ func main() {
 
 		nn.NewLinear(16, 10),
 	)
-	opt := nn.NewMomentum(0.2, 0.9)
+	opt := nn.NewRMSProp(0.001, 0.9, 1e-8)
 	net := nn.NewNetwork(model, nn.CrossEntropy(), opt)
 
-	epochs := 1024
+	epochs := 256
 	batchSize := 64
 	ctx := context.Background()
 	for m := range net.Fit(ctx, train, epochs, batchSize) {

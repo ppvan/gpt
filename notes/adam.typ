@@ -60,3 +60,30 @@ Tương tự với normalization, Momentum có tác dụng "cancel out" những 
 ]
 
 Trực giác: các bước gradient liên tiếp dao động qua lại hai bên "thung lũng" (zig-zag). Khi lấy trung bình động (moving average) của các gradient đó, các thành phần dao động ngang triệt tiêu lẫn nhau, chỉ còn lại thành phần hướng thẳng về điểm tối ưu — giúp hội tụ nhanh và ổn định hơn.
+
+
+Kết quả với momentum:
+
+- epoch=1024 loss=0.000048
+- Metrics {
+        acc:  99.16%
+        prec: 99.17%
+        rec:  99.16%
+        f1:   99.17%
+  }
+
+(khả năng là đã overfit)
+
+Số epoch training giảm 1 nửa -> hội tụ nhanh hơn.
+
+=== RMSProp
+
+RMSProp cũng giống như momentum nhưng re-scale lại gradient theo từng feature:
+- Nếu gradient lớn -> scale nhỏ lại
+- Nếu gradient nhỏ -> scale lớn lên
+
+Feature cần learning rate cao thì RMSProp sẽ tính ra hệ số cao và ngược lại.
+
+
+
+
