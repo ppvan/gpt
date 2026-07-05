@@ -62,7 +62,7 @@ func main() {
 	outputSize := 1
 	hiddenSize := 8
 
-	epochs := 1000
+	epochs := 2000
 	learningRate := 0.002
 
 	xs, labels, maxVal := makeRememberFirstDataset(timeSteps)

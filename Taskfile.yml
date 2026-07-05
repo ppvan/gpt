@@ -43,6 +43,12 @@ tasks:
         vars:
           NAME: bpe
 
+  build:first_number:
+    cmds:
+      - task: build:one
+        vars:
+          NAME: first_number
+
   build:logic_gates:
     cmds:
       - task: build:one
