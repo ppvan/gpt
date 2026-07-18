@@ -232,3 +232,27 @@ func (mat Mat) String() string {
 	}
 	return sb.String()
 }
+
+// Broadcast replicates a (1, C) row matrix into an (rows, C) matrix
+// using pure Dot: ones(rows,1) . self(1,C) -> (rows,C), where every
+// row of the result is a copy of the original row. Panics if mat is
+// not a single row.
+func (mat Mat) Broadcast(rows int) Mat {
+	if mat.Rows != 1 {
+		panic(fmt.Sprintf("Broadcast requires a (1, C) matrix, got (%v x %v)", mat.Rows, mat.Columns))
+	}
+	if rows == 1 {
+		return mat
+	}
+	ones := NewZeroMat(rows, 1).Apply(func(float64) float64 { return 1 })
+	return ones.Dot(mat)
+}
+
+// AddBias adds a (1, C) bias row to every row of mat, broadcasting
+// via Broadcast + the existing (non-broadcasting) Add/Combine.
+func (mat Mat) AddBias(bias Mat) Mat {
+	if mat.Rows == bias.Rows {
+		return mat.Add(bias) // already same shape, e.g. batch=1
+	}
+	return mat.Add(bias.Broadcast(mat.Rows))
+}

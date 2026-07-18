@@ -11,6 +11,7 @@ vars:
     - edit_distance
     - vocab
     - first_number
+    - avg-lstm
     # - prime
 
 tasks:
@@ -60,6 +61,12 @@ tasks:
       - task: build:one
         vars:
           NAME: ndigits
+
+  build:avg-lstm:
+    cmds:
+      - task: build:one
+        vars:
+          NAME: avg-lstm
 
   run:
     desc: Run a command
